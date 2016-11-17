@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import student.TestCase;
 
 /**
@@ -10,21 +12,22 @@ public class ProcessorTest extends TestCase {
 
     private Processor cprocessor;
 
-    @Override
-    public void setUp() throws Exception {
-        Hash artists = new Hash(10, "Artist");
-        Hash songs = new Hash(10, "Song");
-        Memman manager = new Memman(32);
-        CommandParser cparser = new CommandParser(
-                "ProcessorTest.txt");
-        cprocessor = new Processor(manager, artists, songs, cparser);
-
-    }
+//    @Override
+//    public void setUp() throws Exception {
+//        Hash artists = new Hash(10, "Artist");
+//        Hash songs = new Hash(10, "Song");
+//        Memman manager = new Memman(32);
+//        CommandParser cparser = new CommandParser(
+//                "ProcessorTest.txt");
+//        cprocessor = new Processor(manager, artists, songs, cparser);
+//
+//    }
 
     /**
      * test the process method from the processor class
+     * @throws IOException 
      */
-    public void test() {
+    public void test() throws IOException {
         while (true) {
             if (!cprocessor.process()) {
                 break;

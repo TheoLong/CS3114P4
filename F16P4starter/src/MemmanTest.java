@@ -1,4 +1,6 @@
 
+import java.io.IOException;
+
 import student.TestCase;
 
 /**
@@ -12,13 +14,13 @@ public class MemmanTest extends TestCase {
      */
     Memman manager;
 
-    /**
-     * Sets up the tests that follow. In general, used for initialization
-     */
-    @Override
-    public void setUp() {
-        manager = new Memman(5);
-    }
+//    /**
+//     * Sets up the tests that follow. In general, used for initialization
+//     */
+//    @Override
+//    public void setUp() {
+//        manager = new Memman(5);
+//    }
 
     /**
      * Get code coverage of the class declaration.
@@ -29,8 +31,9 @@ public class MemmanTest extends TestCase {
 
     /**
      * test the insert method
+     * @throws IOException 
      */
-    public void testInsertandGetRecord() {
+    public void testInsertandGetRecord() throws IOException {
         Handle h1 = manager.insert("bestf".getBytes(), 5);
         Handle h2 = manager.insert("b".getBytes(), 1);
         Handle h3 = manager.insert("abc".getBytes(), 3);
@@ -54,16 +57,18 @@ public class MemmanTest extends TestCase {
 
     /**
      * Get code coverage for getRecord method
+     * @throws IOException 
      */
-    public void testgetRecord() {
+    public void testgetRecord() throws IOException {
         Handle han = manager.insert("abc".getBytes(), 3);
         assertEquals("abc", new String(manager.getRecord(han)));
     }
 
     /**
      * Test expand method
+     * @throws IOException 
      */
-    public void testexpand() {
+    public void testexpand() throws IOException {
         Handle han1 = manager.insert("abc".getBytes(), 3);
         manager.insert(new byte[3], 3);
         assertTrue(systemOut().getHistory().contains("expanded"));
@@ -78,8 +83,9 @@ public class MemmanTest extends TestCase {
 
     /**
      * Test print method
+     * @throws IOException 
      */
-    public void testprint() {
+    public void testprint() throws IOException {
         manager.insert(new byte[3], 3);
         manager.print();
         assertTrue(systemOut().getHistory().endsWith("(5,0)\n"));
@@ -87,8 +93,9 @@ public class MemmanTest extends TestCase {
 
     /**
      * test remove method
+     * @throws IOException 
      */
-    public void testRemove() {
+    public void testRemove() throws IOException {
         manager.insert("abc".getBytes(), 3);
         Handle h2 = manager.insert("cde".getBytes(), 3);
         manager.insert("efghi".getBytes(), 5);

@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import student.TestCase;
 
 // -------------------------------------------------------------------------
@@ -18,14 +20,14 @@ public class HashTest extends TestCase {
      */
     Hash testHash;
 
-    /**
-     * Sets up the tests that follow.
-     */
-    @Override
-    public void setUp() {
-        manager = new Memman(100);
-        testHash = new Hash(5, "Song");
-    }
+//    /**
+//     * Sets up the tests that follow.
+//     */
+//    @Override
+//    public void setUp() {
+//        manager = new Memman(100);
+//        testHash = new Hash(5, "Song");
+//    }
 
     /**
      * test the constructor of the hash class
@@ -37,8 +39,9 @@ public class HashTest extends TestCase {
 
     /**
      * test the insert function
+     * @throws IOException 
      */
-    public void testInsert() {
+    public void testInsert() throws IOException {
         assertNotNull(testHash.insert("aaaa", manager));
         assertNotNull(testHash.insert("bbbb", manager));
         assertNotNull(testHash.insert("aaaa", manager));
@@ -51,8 +54,9 @@ public class HashTest extends TestCase {
 
     /**
      * test the Remove method
+     * @throws IOException 
      */
-    public void testRemove() {
+    public void testRemove() throws IOException {
         assertFalse(testHash.remove("aaaa", manager));
         assertNotNull(testHash.insert("aaaa", manager));
         assertNotNull(testHash.insert("bbbb", manager));
@@ -67,8 +71,9 @@ public class HashTest extends TestCase {
 
     /**
      * test the print method
+     * @throws IOException 
      */
-    public void testPrint() {
+    public void testPrint() throws IOException {
         assertNotNull(testHash.insert("aaaa", manager));
         testHash.print(manager);
         assertTrue(systemOut().getHistory().endsWith("|aaaa| 3\n"));
@@ -84,8 +89,9 @@ public class HashTest extends TestCase {
 
     /**
      * Test the hash function
+     * @throws IOException 
      */
-    public void testh() {
+    public void testh() throws IOException {
         testHash.print(manager);
         assertNotNull(testHash.insert("Life is Strange", manager));
         testHash.remove("Imposible", manager);

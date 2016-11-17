@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * {Project Description Here}
  */
@@ -33,13 +35,15 @@ public class GraphProject {
     /**
      * @param args
      *     Command line parameters
+     * @throws IOException 
+     * @throws NumberFormatException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NumberFormatException, IOException {
         // This is the main file for the program.
-        Hash artists = new Hash(Integer.parseInt(args[0]), "Artist");
-        Hash songs = new Hash(Integer.parseInt(args[0]), "Song");
-        Memman manager = new Memman(Integer.parseInt(args[1]));
-        CommandParser cparser = new CommandParser(args[2]);
+        Hash artists = new Hash(Integer.parseInt(args[3]), "artist");
+        Hash songs = new Hash(Integer.parseInt(args[3]), "song");
+        Memman manager = new Memman(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+        CommandParser cparser = new CommandParser(args[4]);
         Processor cprocessor = new Processor(manager, artists, songs,
                 cparser);
         while (true) {
@@ -47,5 +51,6 @@ public class GraphProject {
                 break;
             }
         }
+        manager.flush();
     }
 }

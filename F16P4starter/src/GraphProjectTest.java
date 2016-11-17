@@ -1,5 +1,3 @@
-//THeo's commit test
-//comment
 import student.TestCase;
 
 /**
@@ -13,13 +11,19 @@ public class GraphProjectTest extends TestCase {
     public void setUp() {
         // Nothing Here
     }
-    
+
     /**
      * Get code coverage of the class declaration.
      */
     public void testGInit() {
         GraphProject gph = new GraphProject();
         assertNotNull(gph);
-        GraphProject.main(null);
+        try {
+            GraphProject.main(new String[] { "mem.txt", "1", "32", "32", "input.txt",
+                    "stat.txt" });
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

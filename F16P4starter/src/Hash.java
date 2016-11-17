@@ -1,3 +1,4 @@
+import java.io.IOException;
 
 /**
  * Hash table for project 1
@@ -50,8 +51,9 @@ public class Hash {
      *            - associated memory manager to store the data
      * 
      * @return - true on success - false on failure
+     * @throws IOException 
      */
-    public Handle insert(String record, Memman manager) {
+    public Handle insert(String record, Memman manager) throws IOException {
         int i = search(record, h(record, size), manager);
         if (i != -1) {
             System.out.printf(
@@ -82,8 +84,9 @@ public class Hash {
      * @param manager
      *            - associated memory manager
      * @return
+     * @throws IOException 
      */
-    private String getRecord(Handle handle, Memman manager) {
+    private String getRecord(Handle handle, Memman manager) throws IOException {
         return new String(manager.getRecord(handle));
     }
 
@@ -92,8 +95,9 @@ public class Hash {
      * 
      * @param manager
      *            - associated memory manager
+     * @throws IOException 
      */
-    private void expand(Memman manager) {
+    private void expand(Memman manager) throws IOException {
         size *= 2;
         Handle[] temp = new Handle[size];
         for (int i = 0; i < size / 2; i++) {
@@ -114,9 +118,10 @@ public class Hash {
      * 
      * @param manager
      *            - associated memory manager to retrieve data
+     * @throws IOException 
      * 
      */
-    public void print(Memman manager) {
+    public void print(Memman manager) throws IOException {
         for (int i = 0; i < size; i++) {
             if (hashtable[i] != null && hashtable[i].pos() != -1) {
                 System.out.printf("|%s| %d\n",
@@ -144,8 +149,9 @@ public class Hash {
      *            - associated memory manager
      * 
      * @return - true on success - false on failure
+     * @throws IOException 
      */
-    public boolean remove(String record, Memman manager) {
+    public boolean remove(String record, Memman manager) throws IOException {
         int index = search(record, h(record, size), manager);
         if (index == -1) {
             return false;
@@ -168,8 +174,9 @@ public class Hash {
      *            associated Memman
      * 
      * @return the handle of the record null if not found
+     * @throws IOException 
      */
-    public Handle getHandle(String record, Memman manager) {
+    public Handle getHandle(String record, Memman manager) throws IOException {
         int index = search(record, h(record, size), manager);
         if (index != -1) {
             return hashtable[index];
@@ -212,8 +219,9 @@ public class Hash {
      *            - the associated memory manager to retrieve the data
      * @return - -1 when it doesn't find a duplicate record - pos of the record
      *         when a duplicate is found
+     * @throws IOException 
      */
-    private int search(String record, int base, Memman manager) {
+    private int search(String record, int base, Memman manager) throws IOException {
         int pos = base;
         for (int i = 1;; i++) {
             if (hashtable[pos] == null) {

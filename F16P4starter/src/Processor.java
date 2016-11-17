@@ -1,3 +1,4 @@
+import java.io.IOException;
 
 /**
  * @author Xianze
@@ -39,16 +40,19 @@ public class Processor {
      *            - artist name
      * @param song
      *            - song name
+     * @throws IOException 
      */
-    private void insert(String artist, String song) {
-        Handle temp1 = artisttable.insert(artist, manager);
-        Handle temp2 = songtable.insert(song, manager);
-        if (temp1 != null) {
-            System.out.printf("|%s| is added to the artist database.", artist);
-        }
-        if (temp2 != null) {
-            System.out.printf("|%s| is added to the song database.", song);
-        }
+    private void insert(String artist, String song) throws IOException {
+//        Handle temp1 = artisttable.insert(artist, manager);
+//        Handle temp2 = songtable.insert(song, manager);
+//        if (temp1 != null) {
+//            System.out.printf("|%s| is added to the artist database.", artist);
+//        }
+//        if (temp2 != null) {
+//            System.out.printf("|%s| is added to the song database.", song);
+//        }
+        artisttable.insert(artist, manager);
+        songtable.insert(song, manager);
     }
 
     /**
@@ -58,8 +62,9 @@ public class Processor {
      *            - name of the target hash table
      * @param name
      *            - name of the record
+     * @throws IOException 
      */
-    private void remove(String location, String name) {
+    private void remove(String location, String name) throws IOException {
         if (location.equals("artist")) {
             if (artisttable.remove(name, manager)) {
                 System.out.printf("|%s| is removed from the artist database.\n", name);
@@ -81,8 +86,9 @@ public class Processor {
      * 
      * @param target
      *            - the target of the print command (artists/songs/blocks)
+     * @throws IOException 
      */
-    private void print(String target) {
+    private void print(String target) throws IOException {
         if (target.equals("artist")) {
             artisttable.print(manager);
             System.out.printf("total artists: %d\n", artisttable.getSize());
@@ -100,8 +106,9 @@ public class Processor {
      * Process the command file
      * 
      * @return - true on success - false on failure
+     * @throws IOException 
      */
-    public boolean process() {
+    public boolean process() throws IOException {
         String[] argument = parser.nextCommand();
         if (argument != null) {
             if (argument[0].equals("insert")) {
