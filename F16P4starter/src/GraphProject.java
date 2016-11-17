@@ -36,5 +36,16 @@ public class GraphProject {
      */
     public static void main(String[] args) {
         // This is the main file for the program.
+        Hash artists = new Hash(Integer.parseInt(args[0]), "Artist");
+        Hash songs = new Hash(Integer.parseInt(args[0]), "Song");
+        Memman manager = new Memman(Integer.parseInt(args[1]));
+        CommandParser cparser = new CommandParser(args[2]);
+        Processor cprocessor = new Processor(manager, artists, songs,
+                cparser);
+        while (true) {
+            if (!cprocessor.process()) {
+                break;
+            }
+        }
     }
 }
