@@ -18,8 +18,8 @@ Memory pool expanded to be 192 bytes.
 |Bukka White| is added to the artist database.
 Memory pool expanded to be 224 bytes.
 |Fixin' To Die Blues| is added to the song database.
-|Sleepy John Estes| duplicates a record already in the artist database
-|Fixin' To Die Blues| duplicates a record already in the song database
+|Sleepy John Estes| duplicates a record already in the artist database.
+|Fixin' To Die Blues| duplicates a record already in the song database.
 |Blind Lemon Jefferson| 0
 |Sleepy John Estes| 1
 |Charley Patton| 4

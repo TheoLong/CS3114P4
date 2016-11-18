@@ -1,3 +1,6 @@
+import java.io.File;
+import java.util.Scanner;
+
 import student.TestCase;
 
 /**
@@ -19,11 +22,16 @@ public class GraphProjectTest extends TestCase {
         GraphProject gph = new GraphProject();
         assertNotNull(gph);
         try {
-            GraphProject.main(new String[] { "mem.txt", "1", "32", "32", "input.txt",
+            GraphProject.main(new String[] { "mem.txt", "1", "32", "10", "input.txt",
                     "stat.txt" });
+            String output = systemOut().getHistory();
+            String content = new Scanner(new File("P4sampleOutput.txt")).
+                    useDelimiter("\\Z").next();
+            assertEquals(content, output);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+        
     }
 }

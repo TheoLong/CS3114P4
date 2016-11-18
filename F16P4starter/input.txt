@@ -10,6 +10,7 @@ insert Bukka White<SEP>Fixin' To Die Blues
 insert Sleepy John Estes<SEP>Fixin' To Die Blues
 print artist
 print song
+print graph
 insert Guitar Slim<SEP>The Things That I Used To Do
 remove artist Style Council
 remove artist Ma Rainey

@@ -59,7 +59,7 @@ public class Hash {
             System.out.printf(
                     "|%s| duplicates a record already in the %s database.\n",
                     record, content);
-            return null;
+            return getHandle(record, manager);
         }
         else {
             if ((2 * currentsize + 2) > size) {

@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Xianze
@@ -58,6 +59,7 @@ public class Processor {
         map.insertVertex(artistH);
         map.insertVertex(songH);
         map.addEdge(artistH, songH);
+        //map.printList();
     }
 
     /**
@@ -70,10 +72,22 @@ public class Processor {
      * @throws IOException 
      */
     private void remove(String location, String name) throws IOException {
-        if (location.equals("artist")) {
-            if (artisttable.remove(name, manager)) 
+        if (location.equals("artist")) 
+        {   
+            Handle artistH = artisttable.getHandle(name, manager);
+            if (artistH != null) 
             {
+                //toRemove = song needs to be removed along this operation
+                List<Handle> toRemove = map.delete(artistH);
+                artisttable.remove(name, manager);
                 System.out.printf("|%s| is removed from the artist database.\n", name);
+                //to remove songs
+                for (int i = 0; i < toRemove.size(); i++)
+                {
+                    Handle songToRemove = toRemove.get(i);
+                    //do what every to remove this song.
+                }
+                
             }
             
             else 
@@ -81,9 +95,17 @@ public class Processor {
                 System.out.printf("|%s| does not exist in the artist database.\n", name);
             }
         }
-        else if (songtable.remove(name, manager)) 
+        else if (songtable.getHandle(name, manager) != null) 
         {
+            //toRemove = artist needs to be removed along this operation
+            List<Handle> toRemove = map.delete(songtable.getHandle(name, manager));
             System.out.printf("|%s| is removed from the song database.\n", name);
+          //to remove songs
+            for (int i = 0; i < toRemove.size(); i++)
+            {
+                Handle artistToRemove = toRemove.get(i);
+                //do what every to remove this artist.
+            }
         }
         else 
         {
@@ -106,6 +128,10 @@ public class Processor {
         else if (target.equals("song")) {
             songtable.print(manager);
             System.out.printf("total songs: %d\n", songtable.getSize());
+        }
+        else if (target.equals("graph"))
+        {
+            map.printGraph();
         }
         else {
             manager.print();

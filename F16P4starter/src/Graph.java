@@ -86,9 +86,10 @@ public class Graph
      */
     public int insertVertex(Handle h)
     {
-        int handle = h.thePos;
-        if (this.search(handle) == -1)
+        
+        if (h != null && this.search(h.thePos) == -1)
         {
+            int handle = h.thePos;
             //not duplicating
             count++;
             if (count > (size / 2))
@@ -211,7 +212,7 @@ public class Graph
      */
     private int hash(int content, int Hsize)
     {
-        return content / Hsize;
+        return content % Hsize;
     }
     /**
      * =============    addListNode     ================
