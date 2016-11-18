@@ -25,8 +25,6 @@ public class Processor {
      *            song hash table
      * @param p
      *            command parser
-     * @param t
-     *            2-3+ Tree
      */
     public Processor(Memman m, Hash a, Hash s, CommandParser p) {
         manager = m;
@@ -45,15 +43,9 @@ public class Processor {
      *            - song name
      * @throws IOException 
      */
-    private void insert(String artist, String song) throws IOException {
-//        Handle temp1 = artisttable.insert(artist, manager);
-//        Handle temp2 = songtable.insert(song, manager);
-//        if (temp1 != null) {
-//            System.out.printf("|%s| is added to the artist database.", artist);
-//        }
-//        if (temp2 != null) {
-//            System.out.printf("|%s| is added to the song database.", song);
-//        }
+    private void insert(String artist, String song) 
+            throws IOException {
+
         Handle artistH = artisttable.insert(artist, manager);
         Handle songH = songtable.insert(song, manager);
         map.insertVertex(artistH);
@@ -71,7 +63,8 @@ public class Processor {
      *            - name of the record
      * @throws IOException 
      */
-    private void remove(String location, String name) throws IOException {
+    private void remove(String location, String name) 
+            throws IOException {
         if (location.equals("artist")) 
         {   
             Handle artistH = artisttable.getHandle(name, manager);
@@ -80,40 +73,30 @@ public class Processor {
                 //toRemove = song needs to be removed along this operation
                 List<Handle> toRemove = map.delete(artistH);
                 artisttable.remove(name, manager);
-                System.out.printf("|%s| is removed from the artist database.\n", name);
-                //to remove songs
-//                for (int i = 0; i < toRemove.size(); i++)
-//                {
-//                    String song = songtable.getRecord(toRemove.get(i), manager);
-//                    songtable.remove(song, manager);
-//                    System.out.printf("|%s| is removed from the song database.\n", song);
-//                }
-                
+                System.out.printf("|%s| is removed "
+                        + "from the artist database.\n", name);                
             }
             
             else 
             {
-                System.out.printf("|%s| does not exist in the artist database.\n", name);
+                System.out.printf("|%s| does not"
+                        + " exist in the artist database.\n", name);
             }
         }
         else if (songtable.getHandle(name, manager) != null) 
         {
             //toRemove = artist needs to be removed along this operation
-            List<Handle> toRemove = map.delete(songtable.getHandle(name, manager));
+            List<Handle> toRemove = map.delete
+                    (songtable.getHandle(name, manager));
             songtable.remove(name, manager);
-            System.out.printf("|%s| is removed from the song database.\n", name);
-            //to remove artist
-//            for (int i = 0; i < toRemove.size(); i++)
-//            {
-//                //do what every to remove this artist.
-//                String artist = artisttable.getRecord(toRemove.get(i), manager);
-//                artisttable.remove(artist, manager);
-//                System.out.printf("|%s| is removed from the artist database.\n", artist);
-//            }
+            System.out.printf("|%s| is removed from "
+                    + "the song database.\n", name);
+
         }
         else 
         {
-            System.out.printf("|%s| does not exist in the song database.\n", name);
+            System.out.printf("|%s| does not "
+                    + "exist in the song database.\n", name);
         }
     }
 

@@ -91,7 +91,8 @@ public class Memman {
         mergeFreeblock();
         currpoolsize += initpoolsize;
         // memorypool = temp;
-        System.out.printf("Memory pool expanded to be %d bytes.\n", currpoolsize);
+        System.out.printf("Memory pool expanded "
+                + "to be %d bytes.\n", currpoolsize);
     }
 
     /**
@@ -144,9 +145,13 @@ public class Memman {
         freeblocklist.moveToHead();
         freeblocklist.next();
         while (freeblocklist.hasNext()) {
-            if (freeblocklist.getData().index + freeblocklist.getData().length == freeblocklist.peekNext().index) {
-                freeblocklist.peekNext().index = freeblocklist.getData().index;
-                freeblocklist.peekNext().length += freeblocklist.getData().length;
+            if (freeblocklist.getData().index 
+                    + freeblocklist.getData().length
+                    == freeblocklist.peekNext().index) {
+                freeblocklist.peekNext().index = 
+                        freeblocklist.getData().index;
+                freeblocklist.peekNext().length += 
+                        freeblocklist.getData().length;
                 freeblocklist.remove();
                 continue;
             }
@@ -154,14 +159,22 @@ public class Memman {
         }
     }
 
+//    /**
+//     * Create a memory manager object
+//     * 
+//     * @param poolsize
+//     *            - initial size for the memory pool
+//     * @throws IOException
+//     */
     /**
-     * Create a memory manager object
-     * 
-     * @param poolsize
-     *            - initial size for the memory pool
-     * @throws IOException
+     * ======
+     * @param memFile ======
+     * @param numBuff ======
+     * @param buffSize ======
+     * @throws IOException ======
      */
-    public Memman(String memFile, int numBuff, int buffSize) throws IOException {
+    public Memman(String memFile, int numBuff, int buffSize)
+            throws IOException {
         initpoolsize = buffSize;
         bufpool = new Bufferpool(memFile, numBuff, buffSize);
         currpoolsize = buffSize;
@@ -213,7 +226,8 @@ public class Memman {
         // System.arraycopy(memorypool, handle.pos() + 2, record, 0,
         // recordlength - 2);
         // return record;
-        int recordlength = byte2Int(bufpool.readByte(handle.pos()), bufpool.readByte(handle.pos() + 1));
+        int recordlength = byte2Int(bufpool.readByte(
+                handle.pos()), bufpool.readByte(handle.pos() + 1));
         byte[] record = new byte[recordlength];
         for (int i = 0; i < recordlength; i++) {
             record[i] = bufpool.readByte(handle.pos() + i + 2);
@@ -229,22 +243,26 @@ public class Memman {
      * @throws IOException
      */
     public void remove(Handle handle) throws IOException {
-        int recordlength = byte2Int(bufpool.readByte(handle.pos()), bufpool.readByte(handle.pos() + 1)) + 2;
+        int recordlength = byte2Int(bufpool.readByte(handle.
+                pos()), bufpool.readByte(handle.pos() + 1)) + 2;
         if (freeblocklist.getLength() == 0) {
             freeblocklist.moveToTail();
-            freeblocklist.insert(new Freeblock(handle.pos(), recordlength));
+            freeblocklist.insert(new Freeblock(handle.pos(), 
+                    recordlength));
         }
         else {
             freeblocklist.moveToHead();
             while (freeblocklist.hasNext()) {
                 freeblocklist.next();
                 if (freeblocklist.getData().index > handle.pos()) {
-                    freeblocklist.insert(new Freeblock(handle.pos(), recordlength));
+                    freeblocklist.insert(new Freeblock(
+                            handle.pos(), recordlength));
                     break;
                 }
                 if (!freeblocklist.hasNext()) {
                     freeblocklist.moveToTail();
-                    freeblocklist.insert(new Freeblock(handle.pos(), recordlength));
+                    freeblocklist.insert(new Freeblock
+                            (handle.pos(), recordlength));
                 }
             }
             mergeFreeblock();
@@ -263,7 +281,8 @@ public class Memman {
             freeblocklist.moveToHead();
             while (freeblocklist.hasNext()) {
                 freeblocklist.next();
-                System.out.printf("(%d,%d)", freeblocklist.getData().index, freeblocklist.getData().length);
+                System.out.printf("(%d,%d)", freeblocklist.
+                        getData().index, freeblocklist.getData().length);
                 if (freeblocklist.hasNext()) {
                     System.out.print(" -> ");
                 }
@@ -271,7 +290,10 @@ public class Memman {
         }
         System.out.println();
     }
-
+    /**
+     * flush memory
+     * @throws IOException ======
+     */
     public void flush() throws IOException {
         bufpool.flush();
     }

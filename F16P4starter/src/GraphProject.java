@@ -38,11 +38,13 @@ public class GraphProject {
      * @throws IOException 
      * @throws NumberFormatException 
      */
-    public static void main(String[] args) throws NumberFormatException, IOException {
+    public static void main(String[] args) throws
+    NumberFormatException, IOException {
         // This is the main file for the program.
         Hash artists = new Hash(Integer.parseInt(args[3]), "artist");
         Hash songs = new Hash(Integer.parseInt(args[3]), "song");
-        Memman manager = new Memman(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+        Memman manager = new Memman(args[0],
+                Integer.parseInt(args[1]), Integer.parseInt(args[2]));
         CommandParser cparser = new CommandParser(args[4]);
         Processor cprocessor = new Processor(manager, artists, songs,
                 cparser);

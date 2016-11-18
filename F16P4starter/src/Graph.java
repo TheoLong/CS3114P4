@@ -1,16 +1,16 @@
 import java.util.*;
 import java.math.*;
 /**
- * Graph class
- * @author Theo Long
- * this graph class uses hash to place vertex in list 
+ * Class for graph. uses hash function to insert
+ * @author Theo
+ * @version 1.1
  */
 public class Graph 
 {
     /**
      * Adjacency list
      */
-    private Node []AJlist;
+    private Node []ajList;
     /**
      * size of the list
      */
@@ -67,9 +67,9 @@ public class Graph
      * I strongly recommend using prime number as
      * initial size, as this will reduce chance of colission
      */
-    public Graph (int size)
+    public Graph(int size)
     {
-        AJlist = new Node[size];
+        ajList = new Node[size];
         count = 0;
         this.size = size;    
         stats = new int[3];
@@ -98,7 +98,7 @@ public class Graph
                 expand();
             }
             //all clear, insert content
-            return insert(handle, AJlist);
+            return insert(handle, ajList);
         }
         //return -1 if duplicated
         else
@@ -121,7 +121,7 @@ public class Graph
     {
         int slotX = search(x.thePos);
         int slotY = search(y.thePos);
-        if(slotX >= 0 && slotY >=0)
+        if (slotX >= 0 && slotY >= 0)
         {
             //append to adjacent list
             addListNode(slotX, new Node(y.thePos));
@@ -145,15 +145,15 @@ public class Graph
     {
         List<Handle> toRemove = new ArrayList<Handle>();
         int subIndex;
-        int index =search(h.thePos);
-        Node checker = AJlist[index];
+        int index = search(h.thePos);
+        Node checker = ajList[index];
         Node subChecker;
         checker = checker.next;
         //check each element in the list
-        while(checker != null)
+        while (checker != null)
         {
             subIndex = search(checker.index);
-            subChecker = AJlist[subIndex].next;
+            subChecker = ajList[subIndex].next;
             //need to remove the list
             if (subChecker.next == null)
             {
@@ -166,7 +166,8 @@ public class Graph
             //list stays, but element needs to be gone
             else
             {
-                while(subChecker != null && subChecker.index != AJlist[index].index)
+                while (subChecker != null &&
+                        subChecker.index != ajList[index].index)
                 {
                     subChecker = subChecker.next;
                 }
@@ -176,8 +177,8 @@ public class Graph
             checker = checker.next;
         }
         //toRemove.add(new Handle (AJlist[index].index));
-        AJlist[index].index = -1;
-        AJlist[index].next = null;       
+        ajList[index].index = -1;
+        ajList[index].next = null;       
         return toRemove;
     }
     /**
@@ -186,12 +187,12 @@ public class Graph
      */
     public void printList()
     {
-        for (int i =0; i < size; i++)
+        for (int i = 0; i < size; i++)
         {
-            if (AJlist[i] != null && AJlist[i].index >=0)
+            if (ajList[i] != null && ajList[i].index >= 0)
             {
-                Node current = AJlist[i];
-                while(current != null)
+                Node current = ajList[i];
+                while (current != null)
                 {
                     System.out.print(current.index);
                     System.out.print("->");
@@ -207,13 +208,13 @@ public class Graph
     /**
      * =============    Hash function   ================
      * @param content things to hash
-     * @param Hsize size to hash
+     * @param hashSize size to hash
      * @return slot number
      * Just like a normal hash function using mod
      */
-    private int hash(int content, int Hsize)
+    private int hash(int content, int hashSize)
     {
-        return content % Hsize;
+        return content % hashSize;
     }
     /**
      * =============    addListNode     ================
@@ -224,25 +225,25 @@ public class Graph
     private void addListNode(int slot, Node node)
     {
         //empty list
-       if ( AJlist[slot] == null)
-       {
-           AJlist[slot] = node;
-       }
-       else
-       {
-           Node current = AJlist[slot];
-           //search for insertion position
-           while(current.next != null && current != node)
-           {
-               current = current.next;
-           }
-           //Node does not exist
-           if (current != node)
-           {
-               current.next = node;
-               node.previous = current;
-           }
-       }
+        if (ajList[slot] == null)
+        {
+            ajList[slot] = node;
+        }
+        else
+        {
+            Node current = ajList[slot];
+            //search for insertion position
+            while (current.next != null && current != node)
+            {
+                current = current.next;
+            }
+            //Node does not exist
+            if (current != node)
+            {
+                current.next = node;
+                node.previous = current;
+            }
+        }
     }
     /**
      *===========  base insert function  ============
@@ -315,12 +316,12 @@ public class Graph
         int slot = hash(target , size);
         //check the first result   
            //if the place is empty, return -1
-        if (AJlist[slot] == null)
+        if (ajList[slot] == null)
         {
             return -1;
         }
         //found, return key
-        if (AJlist[slot].index == target)
+        if (ajList[slot].index == target)
         {
             //check information
             return slot;
@@ -332,10 +333,10 @@ public class Graph
             nextSlot = nextSlot % size;
         }
         // ignore tomb stone. Only stop when it sees a null
-        while (AJlist[nextSlot] != null)
+        while (ajList[nextSlot] != null)
         {
             //if something is there. compare. break out if found target
-            if (AJlist[nextSlot].index == target)
+            if (ajList[nextSlot].index == target)
             {
                 break;
             }
@@ -348,7 +349,7 @@ public class Graph
             }
         }
         // loop is broken. either target is found or null is found
-        if (AJlist[nextSlot] == null)
+        if (ajList[nextSlot] == null)
         {
             return -1;
         }
@@ -365,7 +366,7 @@ public class Graph
     private void expand()
     {
         //get the prime number
-        BigInteger b = new BigInteger(String.valueOf(size*2));
+        BigInteger b = new BigInteger(String.valueOf(size * 2));
         int newSize = (int)Long.parseLong(b.nextProbablePrime().toString());
         //temp list with new size
         Node [] tempList = new Node[newSize];
@@ -373,18 +374,18 @@ public class Graph
         for (int i = 0; i < size; i++)
         {
             //ignore null and tomb stone
-            if (AJlist[i] != null && AJlist[i].index >= 0)
+            if (ajList[i] != null && ajList[i].index >= 0)
             {
-                reinsert(AJlist[i], tempList);
+                reinsert(ajList[i], tempList);
             }
         }
         //reinsert finished
         size = newSize;
-        AJlist = tempList;
+        ajList = tempList;
     }
     /**
      * ===========  reinsert for doubling size  ============
-     * @param Node list to reinsert
+     * @param node list to reinsert
      * @param target list you are trying to insert
      * @return slot number
      */
@@ -438,27 +439,27 @@ public class Graph
         //mark all vertexes unvisited;
         for (int i = 0; i < size; i++)
         {
-            if (AJlist[i] !=null)
+            if (ajList[i] != null)
             {
-                AJlist[i].visited = false;
+                ajList[i].visited = false;
             }
         }
         //BFS
         int connectedCompNum = 0;
         int maxCompNum = 0;
         //Node maxCompNode;
-        List <Node> maxGraph = null;
-        List <Node> temp;
+        List<Node> maxGraph = null;
+        List<Node> temp;
         //count howmany connected components
         for (int i = 0; i < size; i++)
         {
             //if visited == false, this will be a new connected graph
-            if (AJlist[i] !=null && AJlist[i].index >= 0 && 
-                    AJlist[i].visited == false)
+            if (ajList[i] != null && ajList[i].index >= 0 && 
+                    !ajList[i].visited)
             {
                 //this is a new connected graph. 
                 connectedCompNum++;
-                temp = BFvisit(AJlist[i]);
+                temp = bfVisit(ajList[i]);
                 if (stats[1] > maxCompNum)
                 {
                     maxCompNum = stats[1];
@@ -472,12 +473,15 @@ public class Graph
         //use Dijxxxx to find out the diameter of this graph
         if (count > 0)
         {
-            stats[2] = Dijkstra(maxGraph);
+            stats[2] = dijkstra(maxGraph);
         }
         //printout message
-        System.out.println("There are " + stats[0] + " connected components");
-        System.out.println("The largest connected component has " + stats[1] + " elements"); 
-        System.out.println("The diameter of the largest component is " + stats[2]);
+        System.out.println("There are " + stats[0] + 
+                " connected components");
+        System.out.println("The largest connected "
+                + "component has " + stats[1] + " elements"); 
+        System.out.println("The diameter of the "
+                + "largest component is " + stats[2]);
     }
     /**
      * ===============  BFS visit  ===================
@@ -488,15 +492,15 @@ public class Graph
      * update the number of components in current group
      * and return all nodes from this connected graph
      */
-    private List <Node> BFvisit(Node root)
+    private List<Node> bfVisit(Node root)
     {
         //root itself is a component
         int numOfComp = 1;
         //mark it visited
-        AJlist[search(root.index)].visited = true;
+        ajList[search(root.index)].visited = true;
         //queue for BFS visiting list, allNode for return
-        List <Node> queue = new ArrayList<Node>();
-        List <Node> allNode = new ArrayList<Node>();
+        List<Node> queue = new ArrayList<Node>();
+        List<Node> allNode = new ArrayList<Node>();
         //push in queue
         queue.add(root);
         allNode.add(root);
@@ -508,19 +512,19 @@ public class Graph
             queue.remove(0);
             
             //listCheck will go through all neighbor of marker
-            Node listChecker = AJlist[search(marker)].next;
-            while(listChecker != null)
+            Node listChecker = ajList[search(marker)].next;
+            while (listChecker != null)
             {
                 //check if this neighbor is visited
-                int NodeChecker = search(listChecker.index);
-                if (AJlist[NodeChecker].visited == false)
+                int nodeChecker = search(listChecker.index);
+                if (!ajList[nodeChecker].visited)
                 {
                     //if it is not visited, add to numOfComp
                     numOfComp++;
                     //mark it visited, enqueue for later visit
-                    AJlist[NodeChecker].visited =true;
-                    queue.add(AJlist[NodeChecker]);
-                    allNode.add(AJlist[NodeChecker]);
+                    ajList[nodeChecker].visited = true;
+                    queue.add(ajList[nodeChecker]);
+                    allNode.add(ajList[nodeChecker]);
                 }
                 //check next 
                 listChecker = listChecker.next;
@@ -539,7 +543,7 @@ public class Graph
      * then find the longest path of all these shortest path
      * this will be the diameter.
      */
-    private int Dijkstra(List <Node> allNode) 
+    private int dijkstra(List<Node> allNode) 
     {
         
         int checker;
@@ -549,23 +553,23 @@ public class Graph
         {
             //reset everything for the next run
             //distant = max, visited = false
-	        for (int j=0; j < allNode.size(); j++)
-	        {
-	            checker = search(allNode.get(j).index);
-	            AJlist[checker].distance = Integer.MAX_VALUE;
-	            AJlist[checker].visited = false;
-	        }
-	        //make root distance 0 and visited
-	        checker = allNode.get(i).index; 
-	        int marker = search(checker);
-            Node root = AJlist[marker];
-            AJlist[marker].distance = 0;
-            AJlist[marker].visited = true;
+            for (int j = 0; j < allNode.size(); j++)
+            {
+                checker = search(allNode.get(j).index);
+                ajList[checker].distance = Integer.MAX_VALUE;
+                ajList[checker].visited = false;
+            }
+            //make root distance 0 and visited
+            checker = allNode.get(i).index; 
+            int marker = search(checker);
+            Node root = ajList[marker];
+            ajList[marker].distance = 0;
+            ajList[marker].visited = true;
             
             
             //start bfs
             //this is a queue for BFS
-            List <Node> queue = new ArrayList<Node>();
+            List<Node> queue = new ArrayList<Node>();
             queue.add(root);
             //when the queue is empty, visiting finished
             while (!queue.isEmpty())
@@ -574,22 +578,22 @@ public class Graph
                 marker = queue.get(0).index;
                 queue.remove(0);
                 //list checker will go through all node from marker
-                Node listChecker = AJlist[search(marker)].next;
+                Node listChecker = ajList[search(marker)].next;
                 
                 //=========== list in a node ==================
                 //checkout all adjacent component from marker
-                while(listChecker != null)
+                while (listChecker != null)
                 {
                     //check if visited
                     //because this is BFS and constant edge weight
                     //nodes who was visited first will be closest
                     //no need to update nodes that are visited,
                     //visited nodes got shortest path already
-                    int NodeChecker = search(listChecker.index);
-                    if (AJlist[NodeChecker].visited == false)
+                    int nodeChecker = search(listChecker.index);
+                    if (!ajList[nodeChecker].visited)
                     {
                         //mark it visited, update distance
-                        AJlist[NodeChecker].visited = true;
+                        ajList[nodeChecker].visited = true;
                         /*
                         int newDist = AJlist[search(marker)].distance + 1;
                         //update distance if new distance is shorter
@@ -598,23 +602,23 @@ public class Graph
                             AJlist[NodeChecker].distance = newDist;
                         }
                         */
-                        AJlist[NodeChecker].distance =  
-                                AJlist[search(marker)].distance + 1;
+                        ajList[nodeChecker].distance =  
+                                ajList[search(marker)].distance + 1;
                         //this is a new node, push in queue and visit
                         //it's neighbor later
-                        queue.add(AJlist[NodeChecker]);
+                        queue.add(ajList[nodeChecker]);
                     }
                     //check next neighbor of marker
                     listChecker = listChecker.next;
                 }
             }
             //update distance complete, find the max distance
-            for (int k=0; k < allNode.size(); k++)
+            for (int k = 0; k < allNode.size(); k++)
             {
                 checker = search(allNode.get(k).index);
-                maxShort = Math.max(AJlist[checker].distance, maxShort);
+                maxShort = Math.max(ajList[checker].distance, maxShort);
             }
         }
         return maxShort;
-      }
+    }
 }
