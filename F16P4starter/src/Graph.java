@@ -23,6 +23,7 @@ public class Graph
      * A sub class for Adjacency node lists
      * @author Theo Long
      */
+    private int [] stats;
     private class Node 
     {
         /**
@@ -71,6 +72,7 @@ public class Graph
         AJlist = new Node[size];
         count = 0;
         this.size = size;    
+        stats = new int[3];
     }
     /**
      * =============   insertVertex    ===============
@@ -440,24 +442,31 @@ public class Graph
         //BFS
         int connectedCompNum = 0;
         int maxCompNum = 0;
-        Node maxCompNode;
+        //Node maxCompNode;
+        List <Node> maxGraph = null;
+        List <Node> temp;
         for (int i = 0; i < size; i++)
         {
             if (AJlist[i] !=null && AJlist[i].index >= 0 && AJlist[i].visited == false)
             {
                 //this is a new component. 
                 connectedCompNum++;
-                int newMaxComp = BFvisit(AJlist[i]);
-                if (newMaxComp > maxCompNum)
+                temp = BFvisit(AJlist[i]);
+                if (stats[1] > maxCompNum)
                 {
-                    maxCompNum = newMaxComp;
-                    maxCompNode = AJlist[i];                        
+                    maxCompNum = stats[1];
+                    maxGraph = temp;
+                    //maxCompNode = AJlist[i];                        
                 }
             }
         }
-        System.out.println("There are " + connectedCompNum + " connected components");
-        System.out.println("The largest connected component has " + maxCompNum + " elements"); 
-        System.out.println("The diameter of the largest component is " + 0);
+        
+        stats[0] = connectedCompNum;
+        stats[1] = maxCompNum;
+        stats[2] = Dijkstra(maxGraph);
+        System.out.println("There are " + stats[0] + " connected components");
+        System.out.println("The largest connected component has " + stats[1] + " elements"); 
+        System.out.println("The diameter of the largest component is " + stats[2]);
     }
     /**
      * ================   Visit nodes     =================
@@ -467,7 +476,7 @@ public class Graph
      * THis will do a visit of current group 
      * and report the number of components in current group
      */
-    private int BFvisit(Node root)
+    private List <Node> BFvisit(Node root)
     {
         int numOfComp = 1;
         AJlist[search(root.index)].visited = true;
@@ -498,58 +507,67 @@ public class Graph
             }
             
         }
-        return numOfComp;
+        stats[1] = numOfComp;
+        return allNode;
     }
     
-    private List <Node>  Dijkstra(List <Node> allNode, int numOfComp) 
+    private int Dijkstra(List <Node> allNode) 
     {
         //make every element 0
         int checker;
-        for (int i = 0; i < numOfCamp; i++)
+        int maxShort = 0;
+        for (int i = 0; i < allNode.size(); i++)
         {
-	        for (int j=0; i < numOfComp; j++)
+	        for (int j=0; j < allNode.size(); j++)
 	        {
-	            checker = search(allNode.get(i).index);
+	            checker = search(allNode.get(j).index);
 	            AJlist[checker].distance = Integer.MAX_VALUE;
 	            AJlist[checker].visited = false;
 	        }
-	        
-	        checker = allNode.get(i).index;
-            AJlist[search(checker)].distance = 0;
-            
+	        //make root distance 0
+	        checker = allNode.get(i).index;            
             Node root = AJlist[search(checker)];
             AJlist[search(checker)].distance = 0;
+            AJlist[search(checker)].visited = true;
+            
+            
+            //start bfs
             List <Node> queue = new ArrayList<Node>();
             queue.add(root);
-            allNode.add(root);
             //when the queue is empty, visit finished
             while (!queue.isEmpty())
             {
                 int marker = queue.get(0).index;
                 queue.remove(0);
                 Node listChecker = AJlist[search(marker)].next;
+                
+                //=========== list in a node ==================
                 //checkout all adjacent component from this root
                 while(listChecker != null)
                 {
                     int NodeChecker = search(listChecker.index);
                     if (AJlist[NodeChecker].visited == false)
                     {
-                        //if it is not visited, add to numOfComp
-                        numOfComp++;
-                        AJlist[NodeChecker].visited =true;
-                        AJlist[NodeChecker]
+                        AJlist[NodeChecker].visited = true;
+                        int newDist = AJlist[search(marker)].distance + 1;
+                        //update distance if new distance is shorter
+                        if (newDist < AJlist[NodeChecker].distance)
+                        {
+                            AJlist[NodeChecker].distance = newDist;
+                        }
                         queue.add(AJlist[NodeChecker]);
-                        allNode.add(AJlist[NodeChecker]);
                     }
                     //check next 
                     listChecker = listChecker.next;
                 }
-            }   
+            }
+            //update distance complete, find the max distance
+            for (int k=0; k < allNode.size(); k++)
+            {
+                checker = search(allNode.get(k).index);
+                maxShort = Math.max(AJlist[checker].distance, maxShort);
+            }
         }
-             
-        
-        
-        
-        return null;
+        return maxShort;
       }
 }
