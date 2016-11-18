@@ -122,6 +122,7 @@ public class Graph
         int slotY = search(y.thePos);
         if(slotX >= 0 && slotY >=0)
         {
+            //append to adjacent list
             addListNode(slotX, new Node(y.thePos));
             addListNode(slotY, new Node(x.thePos));
             return true;
@@ -292,7 +293,6 @@ public class Graph
                     nextSlot = nextSlot % target.length;
                 }
             }
-            
             // loop was broken, I either saw a tomb stone or null
             //doesn't matter if it is tomb stone or a null, just place it there
             target[nextSlot] = new Node(content);
@@ -354,7 +354,6 @@ public class Graph
         {
             return nextSlot;
         }
-        
     }
     /**
      *==============     expand  ==================
@@ -427,10 +426,13 @@ public class Graph
     }
     /**
      * =============    print graph stats   ================
-     * @return
      */
     public void printGraph()
     {
+        //reset status variable
+        stats[0] = 0;
+        stats[1] = 0;
+        stats[2] = 0;
         //mark all vertexes unvisited;
         for (int i = 0; i < size; i++)
         {
@@ -445,119 +447,162 @@ public class Graph
         //Node maxCompNode;
         List <Node> maxGraph = null;
         List <Node> temp;
+        //count howmany connected components
         for (int i = 0; i < size; i++)
         {
-            if (AJlist[i] !=null && AJlist[i].index >= 0 && AJlist[i].visited == false)
+            //if visited == false, this will be a new connected graph
+            if (AJlist[i] !=null && AJlist[i].index >= 0 && 
+                    AJlist[i].visited == false)
             {
-                //this is a new component. 
+                //this is a new connected graph. 
                 connectedCompNum++;
                 temp = BFvisit(AJlist[i]);
                 if (stats[1] > maxCompNum)
                 {
                     maxCompNum = stats[1];
-                    maxGraph = temp;
-                    //maxCompNode = AJlist[i];                        
+                    maxGraph = temp;                    
                 }
             }
-        }
-        
+        } 
         stats[0] = connectedCompNum;
         stats[1] = maxCompNum;
-        stats[2] = Dijkstra(maxGraph);
+        //now I know the largest connected graph
+        //use Dijxxxx to find out the diameter of this graph
+        if (count > 0)
+        {
+            stats[2] = Dijkstra(maxGraph);
+        }
+        //printout message
         System.out.println("There are " + stats[0] + " connected components");
         System.out.println("The largest connected component has " + stats[1] + " elements"); 
         System.out.println("The diameter of the largest component is " + stats[2]);
     }
     /**
-     * ================   Visit nodes     =================
+     * ===============  BFS visit  ===================
      * @param root to start visit
-     * @return components in this group
+     * @return all nodes in this connected graph
      * 
      * THis will do a visit of current group 
-     * and report the number of components in current group
+     * update the number of components in current group
+     * and return all nodes from this connected graph
      */
     private List <Node> BFvisit(Node root)
     {
+        //root itself is a component
         int numOfComp = 1;
+        //mark it visited
         AJlist[search(root.index)].visited = true;
+        //queue for BFS visiting list, allNode for return
         List <Node> queue = new ArrayList<Node>();
         List <Node> allNode = new ArrayList<Node>();
+        //push in queue
         queue.add(root);
         allNode.add(root);
         //when the queue is empty, visit finished
         while (!queue.isEmpty())
         {
+            //marker is the current node, once visited, dequeue
             int marker = queue.get(0).index;
             queue.remove(0);
+            
+            //listCheck will go through all neighbor of marker
             Node listChecker = AJlist[search(marker)].next;
-            //checkout all adjacent component from this root
             while(listChecker != null)
             {
+                //check if this neighbor is visited
                 int NodeChecker = search(listChecker.index);
                 if (AJlist[NodeChecker].visited == false)
                 {
                     //if it is not visited, add to numOfComp
                     numOfComp++;
+                    //mark it visited, enqueue for later visit
                     AJlist[NodeChecker].visited =true;
                     queue.add(AJlist[NodeChecker]);
                     allNode.add(AJlist[NodeChecker]);
                 }
                 //check next 
                 listChecker = listChecker.next;
-            }
-            
+            } 
         }
         stats[1] = numOfComp;
         return allNode;
     }
-    
+    /**
+     * ==============    find shortest path    ===================
+     * @param allNode from biggest connected map
+     * @return diameter
+     * 
+     * this function uses Dijxxxxxx algorithm
+     * it will use all node as root, find the shortest path
+     * then find the longest path of all these shortest path
+     * this will be the diameter.
+     */
     private int Dijkstra(List <Node> allNode) 
     {
-        //make every element 0
+        
         int checker;
         int maxShort = 0;
+      //make every element 0
         for (int i = 0; i < allNode.size(); i++)
         {
+            //reset everything for the next run
+            //distant = max, visited = false
 	        for (int j=0; j < allNode.size(); j++)
 	        {
 	            checker = search(allNode.get(j).index);
 	            AJlist[checker].distance = Integer.MAX_VALUE;
 	            AJlist[checker].visited = false;
 	        }
-	        //make root distance 0
-	        checker = allNode.get(i).index;            
-            Node root = AJlist[search(checker)];
-            AJlist[search(checker)].distance = 0;
-            AJlist[search(checker)].visited = true;
+	        //make root distance 0 and visited
+	        checker = allNode.get(i).index; 
+	        int marker = search(checker);
+            Node root = AJlist[marker];
+            AJlist[marker].distance = 0;
+            AJlist[marker].visited = true;
             
             
             //start bfs
+            //this is a queue for BFS
             List <Node> queue = new ArrayList<Node>();
             queue.add(root);
-            //when the queue is empty, visit finished
+            //when the queue is empty, visiting finished
             while (!queue.isEmpty())
             {
-                int marker = queue.get(0).index;
+                //marker is the current node in this loop.
+                marker = queue.get(0).index;
                 queue.remove(0);
+                //list checker will go through all node from marker
                 Node listChecker = AJlist[search(marker)].next;
                 
                 //=========== list in a node ==================
-                //checkout all adjacent component from this root
+                //checkout all adjacent component from marker
                 while(listChecker != null)
                 {
+                    //check if visited
+                    //because this is BFS and constant edge weight
+                    //nodes who was visited first will be closest
+                    //no need to update nodes that are visited,
+                    //visited nodes got shortest path already
                     int NodeChecker = search(listChecker.index);
                     if (AJlist[NodeChecker].visited == false)
                     {
+                        //mark it visited, update distance
                         AJlist[NodeChecker].visited = true;
+                        /*
                         int newDist = AJlist[search(marker)].distance + 1;
                         //update distance if new distance is shorter
                         if (newDist < AJlist[NodeChecker].distance)
                         {
                             AJlist[NodeChecker].distance = newDist;
                         }
+                        */
+                        AJlist[NodeChecker].distance =  
+                                AJlist[search(marker)].distance + 1;
+                        //this is a new node, push in queue and visit
+                        //it's neighbor later
                         queue.add(AJlist[NodeChecker]);
                     }
-                    //check next 
+                    //check next neighbor of marker
                     listChecker = listChecker.next;
                 }
             }

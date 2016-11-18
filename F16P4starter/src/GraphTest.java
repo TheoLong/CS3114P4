@@ -5,14 +5,14 @@ import student.TestCase;
 public class GraphTest extends TestCase
 {
     
-    Graph g;
-    public void testConstructor()
+    private Graph g;
+    
+    public void setUp()
     {
-        
+        g = new Graph(5);
     }
     public void testInsertion()
     {
-        g = new Graph(5);
         int numOfHandles = 9;
         ArrayList<Handle> handles = new ArrayList<Handle>();
         for (int i =0; i < numOfHandles; i++)
@@ -37,13 +37,14 @@ public class GraphTest extends TestCase
     }
     public void testGetDiameter()
     {
-        g = new Graph(5);
+        g.printGraph();
         int numOfHandles = 9;
         ArrayList<Handle> handles = new ArrayList<Handle>();
         for (int i =0; i < numOfHandles; i++)
         {
             handles.add(new Handle(i));
             g.insertVertex(new Handle(i));
+            g.printGraph();
         }
         
         g.delete(new Handle(0));
