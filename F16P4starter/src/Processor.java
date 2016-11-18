@@ -11,6 +11,7 @@ public class Processor {
     private Hash artisttable;
     private Hash songtable;
     private CommandParser parser;
+    private Graph map;
 
     /**
      * Create a Processor object
@@ -31,6 +32,7 @@ public class Processor {
         artisttable = a;
         songtable = s;
         parser = p;
+        map = new Graph(5);
     }
 
     /**
@@ -51,8 +53,11 @@ public class Processor {
 //        if (temp2 != null) {
 //            System.out.printf("|%s| is added to the song database.", song);
 //        }
-        artisttable.insert(artist, manager);
-        songtable.insert(song, manager);
+        Handle artistH = artisttable.insert(artist, manager);
+        Handle songH = songtable.insert(song, manager);
+        map.insertVertex(artistH);
+        map.insertVertex(songH);
+        map.addEdge(artistH, songH);
     }
 
     /**
@@ -66,17 +71,22 @@ public class Processor {
      */
     private void remove(String location, String name) throws IOException {
         if (location.equals("artist")) {
-            if (artisttable.remove(name, manager)) {
+            if (artisttable.remove(name, manager)) 
+            {
                 System.out.printf("|%s| is removed from the artist database.\n", name);
             }
-            else {
+            
+            else 
+            {
                 System.out.printf("|%s| does not exist in the artist database.\n", name);
             }
         }
-        else if (songtable.remove(name, manager)) {
+        else if (songtable.remove(name, manager)) 
+        {
             System.out.printf("|%s| is removed from the song database.\n", name);
         }
-        else {
+        else 
+        {
             System.out.printf("|%s| does not exist in the song database.\n", name);
         }
     }
