@@ -99,6 +99,7 @@ public class Processor {
         {
             //toRemove = artist needs to be removed along this operation
             List<Handle> toRemove = map.delete(songtable.getHandle(name, manager));
+            songtable.remove(name, manager);
             System.out.printf("|%s| is removed from the song database.\n", name);
           //to remove songs
             for (int i = 0; i < toRemove.size(); i++)
