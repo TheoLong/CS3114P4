@@ -158,9 +158,10 @@ public class Graph
             if (subChecker.next == null)
             {
                 //this list only have 1 adjacent. remove it.
-                toRemove.add(new Handle(subChecker.previous.index));
-                AJlist[subIndex].index = -1;
-                AJlist[subIndex].next = null;
+//                toRemove.add(new Handle(subChecker.previous.index));
+//                AJlist[subIndex].index = -1;
+//                AJlist[subIndex].next = null;
+                subChecker.previous.next = null;
             }
             //list stays, but element needs to be gone
             else
@@ -174,7 +175,7 @@ public class Graph
             }
             checker = checker.next;
         }
-        toRemove.add(new Handle (AJlist[index].index));
+        //toRemove.add(new Handle (AJlist[index].index));
         AJlist[index].index = -1;
         AJlist[index].next = null;       
         return toRemove;

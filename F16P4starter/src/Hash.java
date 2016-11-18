@@ -86,7 +86,7 @@ public class Hash {
      * @return
      * @throws IOException 
      */
-    private String getRecord(Handle handle, Memman manager) throws IOException {
+    public String getRecord(Handle handle, Memman manager) throws IOException {
         return new String(manager.getRecord(handle));
     }
 
@@ -163,6 +163,7 @@ public class Hash {
             return true;
         }
     }
+  
 
     /**
      * Get the handle for a record in the hash table

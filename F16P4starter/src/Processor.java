@@ -82,11 +82,12 @@ public class Processor {
                 artisttable.remove(name, manager);
                 System.out.printf("|%s| is removed from the artist database.\n", name);
                 //to remove songs
-                for (int i = 0; i < toRemove.size(); i++)
-                {
-                    Handle songToRemove = toRemove.get(i);
-                    //do what every to remove this song.
-                }
+//                for (int i = 0; i < toRemove.size(); i++)
+//                {
+//                    String song = songtable.getRecord(toRemove.get(i), manager);
+//                    songtable.remove(song, manager);
+//                    System.out.printf("|%s| is removed from the song database.\n", song);
+//                }
                 
             }
             
@@ -101,12 +102,14 @@ public class Processor {
             List<Handle> toRemove = map.delete(songtable.getHandle(name, manager));
             songtable.remove(name, manager);
             System.out.printf("|%s| is removed from the song database.\n", name);
-          //to remove songs
-            for (int i = 0; i < toRemove.size(); i++)
-            {
-                Handle artistToRemove = toRemove.get(i);
-                //do what every to remove this artist.
-            }
+            //to remove artist
+//            for (int i = 0; i < toRemove.size(); i++)
+//            {
+//                //do what every to remove this artist.
+//                String artist = artisttable.getRecord(toRemove.get(i), manager);
+//                artisttable.remove(artist, manager);
+//                System.out.printf("|%s| is removed from the artist database.\n", artist);
+//            }
         }
         else 
         {
