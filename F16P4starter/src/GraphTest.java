@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import student.TestCase;
 
 public class GraphTest extends TestCase
@@ -10,25 +12,33 @@ public class GraphTest extends TestCase
     }
     public void testInsertion()
     {
-        g = new Graph(4);
-        Handle h4 = new Handle(4);
-        Handle h5 = new Handle(5);
-        Handle h2 = new Handle(2);
-        Handle h1 = new Handle(1);
+        g = new Graph(5);
+        int numOfHandles = 9;
+        ArrayList<Handle> handles = new ArrayList<Handle>();
+        for (int i =0; i < numOfHandles; i++)
+        {
+            handles.add(new Handle(i));
+            g.insertVertex(new Handle(i));
+        }
         
-        g.insertVertex(h4);
-        g.insertVertex(h5);
-        g.insertVertex(h2);
-        g.insertVertex(h1);
-        //g.insertVertex(new Handle(6));
+        g.delete(new Handle(0));
         
-        g.addEdge(h2, h1);
-        g.addEdge(h4, h5);
-        g.addEdge(h2, h5);
+        g.addEdge(handles.get(1), handles.get(4));
+        g.addEdge(handles.get(2), handles.get(4));
+        g.addEdge(handles.get(3), handles.get(4));
+        g.addEdge(handles.get(3), handles.get(2));
+        g.addEdge(handles.get(7), handles.get(4));
+        g.addEdge(handles.get(7), handles.get(8));
+        
+        g.addEdge(handles.get(5), handles.get(6));
+        
+        
+        
+        g.printList();
+        //System.out.println( g.delete(h2));
+        //g.printGraph();
+        
         
         g.printGraph();
-        System.out.println( g.delete(h2));
-        g.printGraph();
-        
     }
 }
