@@ -505,24 +505,49 @@ public class Graph
     {
         //make every element 0
         int checker;
-        for (int i=0; i < numOfComp; i++)
+        for (int i = 0; i < numOfCamp; i++)
         {
-            checker = search(allNode.get(i).index);
-            AJlist[checker].distance = Integer.MAX_VALUE;
-            AJlist[checker].visited = false;
-            checker = allNode.get(0).index;
+	        for (int j=0; i < numOfComp; j++)
+	        {
+	            checker = search(allNode.get(i).index);
+	            AJlist[checker].distance = Integer.MAX_VALUE;
+	            AJlist[checker].visited = false;
+	        }
+	        
+	        checker = allNode.get(i).index;
             AJlist[search(checker)].distance = 0;
-            /*
-            for (int i=0; i<numOfComp; i++) 
-            {  
-                checker = search(allNode.get(i).index);
-                for (Node subChecker = AJlist[checker].next; subChecker != null; subChecker = subChecker.next)
+            
+            Node root = AJlist[search(checker)];
+            AJlist[search(checker)].distance = 0;
+            List <Node> queue = new ArrayList<Node>();
+            queue.add(root);
+            allNode.add(root);
+            //when the queue is empty, visit finished
+            while (!queue.isEmpty())
+            {
+                int marker = queue.get(0).index;
+                queue.remove(0);
+                Node listChecker = AJlist[search(marker)].next;
+                //checkout all adjacent component from this root
+                while(listChecker != null)
                 {
-                    subChecker.index
+                    int NodeChecker = search(listChecker.index);
+                    if (AJlist[NodeChecker].visited == false)
+                    {
+                        //if it is not visited, add to numOfComp
+                        numOfComp++;
+                        AJlist[NodeChecker].visited =true;
+                        AJlist[NodeChecker]
+                        queue.add(AJlist[NodeChecker]);
+                        allNode.add(AJlist[NodeChecker]);
+                    }
+                    //check next 
+                    listChecker = listChecker.next;
                 }
-            }
-            */
+            }   
         }
+             
+        
         
         
         return null;
