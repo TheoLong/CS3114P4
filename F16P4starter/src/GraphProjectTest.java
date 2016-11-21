@@ -23,11 +23,11 @@ public class GraphProjectTest extends TestCase {
         assertNotNull(gph);
         try {
             GraphProject.main(new String[] { "mem.txt",
-                    "1", "32", "10", "reference_input13.txt","stat.txt" });
+                    "1", "32", "10", "input.txt","stat.txt" });
             String output = systemOut().getHistory();
             String content = new Scanner(new File("P4sampleOutput.txt")).
                     useDelimiter("\\Z").next();
-            //assertEquals(content, output);
+            assertEquals(content, output);
 
         }
         catch (Exception e) {

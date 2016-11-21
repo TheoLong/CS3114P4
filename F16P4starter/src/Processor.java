@@ -51,7 +51,6 @@ public class Processor {
         map.insertVertex(artistH);
         map.insertVertex(songH);
         map.addEdge(artistH, songH);
-        //map.printList();
     }
 
     /**
@@ -118,7 +117,6 @@ public class Processor {
         }
         else if (target.equals("graph"))
         {
-            map.printList();
             map.printGraph();
         }
         else {
