@@ -80,6 +80,7 @@ insert Bruce Rowland<SEP>Mountain Theme
 insert Thomas Dolby<SEP>She Blinded Me With Science
 remove artist Bruce Rowland
 remove song Mountain Theme
+print graph
 insert Cheo Feliciano<SEP>Juguete
 insert Johnny Winter<SEP>Be Careful With A Fool
 insert Kings Of Leon<SEP>Wicker Chair
@@ -91,7 +92,9 @@ insert Tiny Bradshaw<SEP>Well Oh Well
 insert 3 Doors Down<SEP>Sarah Yellin'
 insert Akon<SEP>Over The Edge
 remove artist akkkk
+print graph
 remove song Over The Edge
+print graph
 insert Gerard Lenorman<SEP>Soldats Ne Tirez Pas
 insert All Time Low<SEP>Shameless
 insert Barenaked Ladies<SEP>This Is Where It Ends (Album Version)
