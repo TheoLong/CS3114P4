@@ -68,6 +68,7 @@ public class GraphTest extends TestCase
         g.addEdge(handles.get(7), handles.get(8));
         
         g.addEdge(handles.get(5), handles.get(6));
+        g.addEdge(handles.get(5), handles.get(6));
     }
     /**
      * test get diameter function
@@ -104,7 +105,6 @@ public class GraphTest extends TestCase
         {
             assertEquals(handles.add(new Handle(i)), true);
             g.insertVertex(new Handle(i));
-            g.printGraph();
         }
         
         g.delete(new Handle(0));
@@ -115,8 +115,10 @@ public class GraphTest extends TestCase
         assertEquals(g.addEdge(handles.get(1), handles.get(5)), true);
         g.printList();
         g.printGraph();
-        g.delete(new Handle(1));
-        g.delete(new Handle(3));
+        for (int i = 1; i < numOfHandles; i++)
+        {
+            g.delete(handles.get(i));
+        }
         
     }
 }

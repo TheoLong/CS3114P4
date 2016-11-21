@@ -153,15 +153,15 @@ public class Graph
         while (checker != null)
         {
             subIndex = search(checker.handleIndex);
-            subChecker = ajList[subIndex].next;
+            subChecker = ajList[subIndex];
             //need to remove the list
-            if (subChecker != null)
+            if (subChecker.next != null)
             {
-                while (subChecker.handleIndex != h.thePos)
+                while (subChecker.next.handleIndex != h.thePos)
                 {
                     subChecker = subChecker.next;
                 }
-                (subChecker.previous).next = subChecker.next;
+                subChecker.next = subChecker.next.next;
             }
             checker = checker.next;
         }
