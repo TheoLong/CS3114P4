@@ -220,19 +220,9 @@ public class Memman {
      * @throws IOException
      */
     public byte[] getRecord(Handle handle) throws IOException {
-        // int recordlength = byte2Int(memorypool[handle.pos()],
-        // memorypool[handle.pos() + 1]);
-        // byte[] record = new byte[recordlength - 2];
-        // System.arraycopy(memorypool, handle.pos() + 2, record, 0,
-        // recordlength - 2);
-        // return record;
         int recordlength = byte2Int(bufpool.readByte(
                 handle.pos()), bufpool.readByte(handle.pos() + 1));
-        byte[] record = new byte[recordlength];
-        for (int i = 0; i < recordlength; i++) {
-            record[i] = bufpool.readByte(handle.pos() + i + 2);
-        }
-        return record;
+        return bufpool.read(handle.pos() + 2, (short) recordlength);
     }
 
     /**
