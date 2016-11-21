@@ -143,10 +143,6 @@ public class Graph
      */
     public List<Handle> delete(Handle h)
     {
-        if (h == null)
-        {
-            return null;
-        }
         //List<Handle> toRemove = new ArrayList<Handle>();
         int subIndex;
         int targetIndex = search(h.thePos);
