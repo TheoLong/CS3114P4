@@ -1,0 +1,99 @@
+<INPUT>remove song When Summer's Through
+|When Summer's Through| does not exist in the song database.
+<INPUT>print blocks
+(0,32)
+<INPUT>print song
+total songs: 0
+<INPUT>print artist
+total artists: 0
+<INPUT>insert Blind Lemon Jefferson<SEP>Long Lonesome Blues
+|Blind Lemon Jefferson| is added to the artist database.
+Memory pool expanded to be 64 bytes.
+|Long Lonesome Blues| is added to the song database.
+<INPUT>insert Ma Rainey<SEP>Ma Rainey's Black Bottom
+|Ma Rainey| is added to the artist database.
+Memory pool expanded to be 96 bytes.
+|Ma Rainey's Black Bottom| is added to the song database.
+<INPUT>insert Charley Patton<SEP>Mississippi Boweavil Blues
+Memory pool expanded to be 128 bytes.
+|Charley Patton| is added to the artist database.
+|Mississippi Boweavil Blues| is added to the song database.
+<INPUT>insert Sleepy John Estes<SEP>Street Car Blues
+Memory pool expanded to be 160 bytes.
+|Sleepy John Estes| is added to the artist database.
+Memory pool expanded to be 192 bytes.
+|Street Car Blues| is added to the song database.
+<INPUT>insert Bukka White<SEP>Fixin' To Die Blues
+|Bukka White| is added to the artist database.
+Memory pool expanded to be 224 bytes.
+|Fixin' To Die Blues| is added to the song database.
+<INPUT>insert Sleepy John Estes<SEP>Fixin' To Die Blues
+|Sleepy John Estes| duplicates a record already in the artist database
+|Fixin' To Die Blues| duplicates a record already in the song database
+<INPUT>print artist
+|Blind Lemon Jefferson| 0
+|Sleepy John Estes| 1
+|Charley Patton| 4
+|Bukka White| 5
+|Ma Rainey| 7
+total artists: 5
+<INPUT>print song
+|Fixin' To Die Blues| 1
+|Mississippi Boweavil Blues| 2
+|Long Lonesome Blues| 5
+|Ma Rainey's Black Bottom| 6
+|Street Car Blues| 9
+total songs: 5
+<INPUT>print graph
+There are 4 connected components
+The largest connected component has 4 elements
+The diameter of the largest component is 3
+<INPUT>insert Guitar Slim<SEP>The Things That I Used To Do
+Artist hash table size doubled.
+|Guitar Slim| is added to the artist database.
+Song hash table size doubled.
+Memory pool expanded to be 256 bytes.
+|The Things That I Used To Do| is added to the song database.
+<INPUT>remove artist Style Council
+|Style Council| does not exist in the artist database.
+<INPUT>remove artist Ma Rainey
+|Ma Rainey| is removed from the artist database.
+<INPUT>remove song Mississippi Boweavil Blues
+|Mississippi Boweavil Blues| is removed from the song database.
+<INPUT>remove song (The Best Part Of) Breakin' Up
+|(The Best Part Of) Breakin' Up| does not exist in the song database.
+<INPUT>print blocks
+(44,11) -> (97,28) -> (239,17)
+<INPUT>insert Blind Lemon Jefferson<SEP>Got The Blues
+|Blind Lemon Jefferson| duplicates a record already in the artist database.
+|Got The Blues| is added to the song database.
+<INPUT>insert Little Eva<SEP>The Loco-Motion
+|Little Eva| is added to the artist database.
+Memory pool expanded to be 288 bytes.
+|The Loco-Motion| is added to the song database.
+<INPUT>print artist
+|Blind Lemon Jefferson| 0
+|Bukka White| 4
+|Sleepy John Estes| 10
+|Guitar Slim| 12
+|Charley Patton| 14
+|Little Eva| 18
+total artists: 6
+<INPUT>print song
+|Fixin' To Die Blues| 1
+|Street Car Blues| 5
+|Got The Blues| 8
+|Long Lonesome Blues| 15
+|Ma Rainey's Black Bottom| 16
+|The Things That I Used To Do| 17
+|The Loco-Motion| 18
+total songs: 7
+<INPUT>insert Jim Reeves<SEP>Jingle Bells
+|Jim Reeves| is added to the artist database.
+|Jingle Bells| is added to the song database.
+<INPUT>insert Mongo Santamaria<SEP>Watermelon Man
+Memory pool expanded to be 320 bytes.
+|Mongo Santamaria| is added to the artist database.
+|Watermelon Man| is added to the song database.
+<INPUT>print blocks
+(44,11) -> (121,4) -> (319,1)
