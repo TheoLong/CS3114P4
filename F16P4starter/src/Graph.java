@@ -37,7 +37,7 @@ public class Graph
         /**
          * index, used to hold handle position
          */
-        int index;
+        int handleIndex;
         /**
          * if this is visited
          */
@@ -55,7 +55,7 @@ public class Graph
         {
             previous = null;
             next = null;
-            index = i;
+            handleIndex = i;
             visited = false;
             distance = Integer.MAX_VALUE;
         }
@@ -123,7 +123,7 @@ public class Graph
         {
             int slotX = search(x.thePos);
             int slotY = search(y.thePos);
-            if (slotX >= 0 && slotY >= 0)
+            if (slotX >= 0 && slotY >= 0 && !isEdge(slotX, y.thePos))
             {
                 //append to adjacent list
                 addListNode(slotX, new Node(y.thePos));
@@ -143,43 +143,35 @@ public class Graph
      */
     public List<Handle> delete(Handle h)
     {
-        List<Handle> toRemove = new ArrayList<Handle>();
+        if (h == null)
+        {
+            return null;
+        }
+        //List<Handle> toRemove = new ArrayList<Handle>();
         int subIndex;
-        int index = search(h.thePos);
-        Node checker = ajList[index];
+        int targetIndex = search(h.thePos);
+        Node checker = ajList[targetIndex];
         Node subChecker;
         checker = checker.next;
         //check each element in the list
         while (checker != null)
         {
-            subIndex = search(checker.index);
+            subIndex = search(checker.handleIndex);
             subChecker = ajList[subIndex].next;
             //need to remove the list
-            if (subChecker.next == null)
+            if (subChecker != null)
             {
-                //this list only have 1 adjacent. remove it.
-//                toRemove.add(new Handle(subChecker.previous.index));
-//                AJlist[subIndex].index = -1;
-//                AJlist[subIndex].next = null;
-                subChecker.previous.next = null;
-            }
-            //list stays, but element needs to be gone
-            else
-            {
-                while (subChecker != null &&
-                        subChecker.index != ajList[index].index)
+                while(subChecker.handleIndex != h.thePos)
                 {
                     subChecker = subChecker.next;
                 }
-                //remove it from the list
-                subChecker.previous.next = subChecker.next;
+                (subChecker.previous).next = subChecker.next;
             }
             checker = checker.next;
         }
         //toRemove.add(new Handle (AJlist[index].index));
-        ajList[index].index = -1;
-        ajList[index].next = null;       
-        return toRemove;
+        ajList[targetIndex] = new Node(-1);      
+        return null;
     }
     /**
      * =============       print list      =================
@@ -189,12 +181,12 @@ public class Graph
     {
         for (int i = 0; i < size; i++)
         {
-            if (ajList[i] != null && ajList[i].index >= 0)
+            if (ajList[i] != null && ajList[i].handleIndex >= 0)
             {
                 Node current = ajList[i];
                 while (current != null)
                 {
-                    System.out.print(current.index);
+                    System.out.print(current.handleIndex);
                     System.out.print("->");
                     current = current.next;
                 }
@@ -264,7 +256,7 @@ public class Graph
         
         
         //if this is unused slot, place directly in
-        if (target[slot] == null || target[slot].index < 0 )
+        if (target[slot] == null || target[slot].handleIndex < 0 )
         {
             target[slot] = new Node(content);
             return slot;
@@ -285,7 +277,7 @@ public class Graph
                 {
                     break;
                 }
-                else if (target[nextSlot].index == -1)
+                else if (target[nextSlot].handleIndex == -1)
                 {
                     break;
                 }
@@ -321,7 +313,7 @@ public class Graph
             return -1;
         }
         //found, return key
-        if (ajList[slot].index == target)
+        if (ajList[slot].handleIndex == target)
         {
             //check information
             return slot;
@@ -336,7 +328,7 @@ public class Graph
         while (ajList[nextSlot] != null)
         {
             //if something is there. compare. break out if found target
-            if (ajList[nextSlot].index == target)
+            if (ajList[nextSlot].handleIndex == target)
             {
                 break;
             }
@@ -374,7 +366,7 @@ public class Graph
         for (int i = 0; i < size; i++)
         {
             //ignore null and tomb stone
-            if (ajList[i] != null && ajList[i].index >= 0)
+            if (ajList[i] != null && ajList[i].handleIndex >= 0)
             {
                 reinsert(ajList[i], tempList);
             }
@@ -392,7 +384,7 @@ public class Graph
     private int reinsert(Node node, Node [] target)
     {
         //retrieve the content
-        int content = node.index;
+        int content = node.handleIndex;
         //retrieve
         int slot = hash(content, target.length);
  
@@ -454,7 +446,7 @@ public class Graph
         for (int i = 0; i < size; i++)
         {
             //if visited == false, this will be a new connected graph
-            if (ajList[i] != null && ajList[i].index >= 0 && 
+            if (ajList[i] != null && ajList[i].handleIndex >= 0 && 
                     !ajList[i].visited)
             {
                 //this is a new connected graph. 
@@ -497,7 +489,7 @@ public class Graph
         //root itself is a component
         int numOfComp = 1;
         //mark it visited
-        ajList[search(root.index)].visited = true;
+        ajList[search(root.handleIndex)].visited = true;
         //queue for BFS visiting list, allNode for return
         List<Node> queue = new ArrayList<Node>();
         List<Node> allNode = new ArrayList<Node>();
@@ -508,15 +500,15 @@ public class Graph
         while (!queue.isEmpty())
         {
             //marker is the current node, once visited, dequeue
-            int marker = queue.get(0).index;
+            int marker = queue.get(0).handleIndex;
             queue.remove(0);
             
             //listCheck will go through all neighbor of marker
-            Node listChecker = ajList[search(marker)];
-            while (listChecker.next != null)
+            Node listChecker = ajList[search(marker)].next;
+            while (listChecker != null)
             {
                 //check if this neighbor is visited
-                int nodeChecker = search(listChecker.index);
+                int nodeChecker = search(listChecker.handleIndex);
                 if (!ajList[nodeChecker].visited)
                 {
                     //if it is not visited, add to numOfComp
@@ -555,12 +547,12 @@ public class Graph
             //distant = max, visited = false
             for (int j = 0; j < allNode.size(); j++)
             {
-                checker = search(allNode.get(j).index);
+                checker = search(allNode.get(j).handleIndex);
                 ajList[checker].distance = Integer.MAX_VALUE;
                 ajList[checker].visited = false;
             }
             //make root distance 0 and visited
-            checker = allNode.get(i).index; 
+            checker = allNode.get(i).handleIndex; 
             int marker = search(checker);
             Node root = ajList[marker];
             ajList[marker].distance = 0;
@@ -575,7 +567,7 @@ public class Graph
             while (!queue.isEmpty())
             {
                 //marker is the current node in this loop.
-                marker = queue.get(0).index;
+                marker = queue.get(0).handleIndex;
                 queue.remove(0);
                 //list checker will go through all node from marker
                 Node listChecker = ajList[search(marker)].next;
@@ -589,7 +581,7 @@ public class Graph
                     //nodes who was visited first will be closest
                     //no need to update nodes that are visited,
                     //visited nodes got shortest path already
-                    int nodeChecker = search(listChecker.index);
+                    int nodeChecker = search(listChecker.handleIndex);
                     if (!ajList[nodeChecker].visited)
                     {
                         //mark it visited, update distance
@@ -615,10 +607,23 @@ public class Graph
             //update distance complete, find the max distance
             for (int k = 0; k < allNode.size(); k++)
             {
-                checker = search(allNode.get(k).index);
+                checker = search(allNode.get(k).handleIndex);
                 maxShort = Math.max(ajList[checker].distance, maxShort);
             }
         }
         return maxShort;
+    }
+    private boolean isEdge(int slotX, int indexY)
+    {
+        Node checkerX = ajList[slotX];
+        while(checkerX != null)
+        {
+            if (checkerX.handleIndex == indexY)
+            {
+                return true;
+            }
+            checkerX = checkerX.next;
+        }
+        return false;
     }
 }

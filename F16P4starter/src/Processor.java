@@ -86,7 +86,7 @@ public class Processor {
         else if (songtable.getHandle(name, manager) != null) 
         {
             //toRemove = artist needs to be removed along this operation
-            List<Handle> toRemove = map.delete
+            map.delete
                     (songtable.getHandle(name, manager));
             songtable.remove(name, manager);
             System.out.printf("|%s| is removed from "
@@ -118,6 +118,7 @@ public class Processor {
         }
         else if (target.equals("graph"))
         {
+            map.printList();
             map.printGraph();
         }
         else {
