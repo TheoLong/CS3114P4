@@ -109,10 +109,10 @@ public class GraphTest extends TestCase
         
         g.delete(new Handle(0));
         
-        assertEquals(g.addEdge(handles.get(1), handles.get(2)),true);
-        assertEquals(g.addEdge(handles.get(1), handles.get(3)),true);
-        assertEquals(g.addEdge(handles.get(1), handles.get(4)),true);
-        assertEquals(g.addEdge(handles.get(1), handles.get(5)),true);
+        assertEquals(g.addEdge(handles.get(1), handles.get(2)), true);
+        assertEquals(g.addEdge(handles.get(1), handles.get(3)), true);
+        assertEquals(g.addEdge(handles.get(1), handles.get(4)), true);
+        assertEquals(g.addEdge(handles.get(1), handles.get(5)), true);
         g.printList();
         g.printGraph();
         g.delete(new Handle(1));

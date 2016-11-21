@@ -119,7 +119,7 @@ public class Graph
     //assume vertex does exist
     public boolean addEdge(Handle x, Handle y)
     {
-        if(x != null && y != null)
+        if (x != null && y != null)
         {
             int slotX = search(x.thePos);
             int slotY = search(y.thePos);
@@ -161,7 +161,7 @@ public class Graph
             //need to remove the list
             if (subChecker != null)
             {
-                while(subChecker.handleIndex != h.thePos)
+                while (subChecker.handleIndex != h.thePos)
                 {
                     subChecker = subChecker.next;
                 }
@@ -613,10 +613,16 @@ public class Graph
         }
         return maxShort;
     }
+    /**
+     * =========== is there a existing edge? ==========
+     * @param slotX
+     * @param indexY
+     * @return
+     */
     private boolean isEdge(int slotX, int indexY)
     {
         Node checkerX = ajList[slotX];
-        while(checkerX != null)
+        while (checkerX != null)
         {
             if (checkerX.handleIndex == indexY)
             {
