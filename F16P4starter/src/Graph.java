@@ -512,8 +512,8 @@ public class Graph
             queue.remove(0);
             
             //listCheck will go through all neighbor of marker
-            Node listChecker = ajList[search(marker)].next;
-            while (listChecker != null)
+            Node listChecker = ajList[search(marker)];
+            while (listChecker.next != null)
             {
                 //check if this neighbor is visited
                 int nodeChecker = search(listChecker.index);
