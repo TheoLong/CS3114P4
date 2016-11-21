@@ -119,19 +119,19 @@ public class Graph
     //assume vertex does exist
     public boolean addEdge(Handle x, Handle y)
     {
-        int slotX = search(x.thePos);
-        int slotY = search(y.thePos);
-        if (slotX >= 0 && slotY >= 0)
+        if(x != null && y != null)
         {
-            //append to adjacent list
-            addListNode(slotX, new Node(y.thePos));
-            addListNode(slotY, new Node(x.thePos));
-            return true;
+            int slotX = search(x.thePos);
+            int slotY = search(y.thePos);
+            if (slotX >= 0 && slotY >= 0)
+            {
+                //append to adjacent list
+                addListNode(slotX, new Node(y.thePos));
+                addListNode(slotY, new Node(x.thePos));
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
     /**
      * =============    delete      =================
