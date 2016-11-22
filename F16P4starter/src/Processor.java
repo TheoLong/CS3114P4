@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author Xianze
@@ -70,7 +69,7 @@ public class Processor {
                 map.delete(artistH);
                 artisttable.remove(name, manager);
                 System.out.printf("|%s| is removed " + 
-                "from the artist database.\n", name);
+                    "from the artist database.\n", name);
             }
 
             else {

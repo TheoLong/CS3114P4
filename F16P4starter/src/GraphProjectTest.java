@@ -35,8 +35,7 @@ public class GraphProjectTest extends TestCase {
         } 
         try {
             GraphProject.main(new String[] { "mem.txt",
-                "1", "32", "10", "reference_input13.txt","stat.txt" });
-            String output = systemOut().getHistory();
+                "1", "32", "10", "reference_input13.txt", "stat.txt" });
         }
         catch (Exception e) {
             e.printStackTrace();
