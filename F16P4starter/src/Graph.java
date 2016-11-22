@@ -214,7 +214,7 @@ public class Graph
     {
         Node current = ajList[slot];
         //search for insertion position
-        while (current.next != null && current != node)
+        while (current.next != null)
         {
             current = current.next;
         }
@@ -257,11 +257,7 @@ public class Graph
             // if I don't see a null, or a tomb stone, keep stepping
             while (true)
             {
-                if (target[nextSlot] == null)
-                {
-                    break;
-                }
-                else if (target[nextSlot].handleIndex == -1)
+                if (target[nextSlot] == null || target[nextSlot].handleIndex == -1)
                 {
                     break;
                 }
