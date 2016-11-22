@@ -34,22 +34,4 @@ public class ProcessorTest extends TestCase {
     {
         assertEquals(cprocessor.process(), true);
     }
-//        assertTrue(systemOut().getHistory().contains(
-//                "|Blind Lemon Jefferson| is added t"
-//                + "o the artist database.\n"));
-//        assertTrue(systemOut().getHistory().contains(
-//                "|Ma Rainey's Black Bottom| duplicates a record already in "
-//                        + "the song database.\n"));
-//        assertTrue(systemOut().getHistory().contains(
-//                "|Long Lonesome Blues| is added to the song database.\n"));
-//        assertTrue(systemOut().getHistory().contains(
-//                "|Ma Rainey's Black Bottom| duplicates a record already "
-//                        + "in the song database.\n"));
-//        assertTrue(systemOut().getHistory().contains(
-//                "|Ma Rainey| is removed from the artist database.\n"));
-//        assertTrue(systemOut().getHistory().contains(
-//                "|Mississippi Boweavil Blues| is removed from "
-//                        + "the song database.\n"));
-//    }
-
 }
