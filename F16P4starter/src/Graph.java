@@ -84,7 +84,7 @@ public class Graph
      * -1 will be returned if insertion failed;
      * failure typically due to duplication
      */
-    public int insertVertex(Handle h)
+    public boolean insertVertex(Handle h)
     {
         
         if (h != null && this.search(h.thePos) == -1)
@@ -98,13 +98,10 @@ public class Graph
                 expand();
             }
             //all clear, insert content
-            return insert(handle, ajList);
+            insert(handle, ajList);
+            return true;
         }
-        //return -1 if duplicated
-        else
-        {
-            return -1;
-        }
+        return false;
     }
     /**
      * =============    addEdge     ==============
@@ -123,7 +120,7 @@ public class Graph
         {
             int slotX = search(x.thePos);
             int slotY = search(y.thePos);
-            if (slotX >= 0 && slotY >= 0 && !isEdge(slotX, y.thePos))
+            if (!isEdge(slotX, slotY, x.thePos, y.thePos))
             {
                 //append to adjacent list
                 addListNode(slotX, new Node(y.thePos));
@@ -155,14 +152,11 @@ public class Graph
             subIndex = search(checker.handleIndex);
             subChecker = ajList[subIndex];
             //need to remove the list
-            if (subChecker.next != null)
+            while (subChecker.next.handleIndex != h.thePos)
             {
-                while (subChecker.next.handleIndex != h.thePos)
-                {
-                    subChecker = subChecker.next;
-                }
-                subChecker.next = subChecker.next.next;
+                subChecker = subChecker.next;
             }
+            subChecker.next = subChecker.next.next;
             checker = checker.next;
         }
         //toRemove.add(new Handle (AJlist[index].index));
@@ -233,7 +227,7 @@ public class Graph
      *         if the hashTable is empty, add in directly
      * 2. else do quadratic stepping
      */
-    private int insert(int content, Node [] target)
+    private void insert(int content, Node [] target)
     {
       //initialize a slot
         int slot = hash(content, target.length);
@@ -243,7 +237,6 @@ public class Graph
         if (target[slot] == null || target[slot].handleIndex < 0 )
         {
             target[slot] = new Node(content);
-            return slot;
         }
         //else, collision happened, find next slot
         else 
@@ -255,12 +248,9 @@ public class Graph
                 nextSlot = nextSlot % target.length;
             }
             // if I don't see a null, or a tomb stone, keep stepping
-            while (true)
+            while (target[nextSlot] != null && 
+                    target[nextSlot].handleIndex != -1)
             {
-                if (target[nextSlot] == null || target[nextSlot].handleIndex == -1)
-                {
-                    break;
-                }
                 step++;
                 nextSlot = slot + step * step;
                 if (nextSlot >= target.length)
@@ -271,7 +261,6 @@ public class Graph
             // loop was broken, I either saw a tomb stone or null
             //doesn't matter if it is tomb stone or a null, just place it there
             target[nextSlot] = new Node(content);
-            return nextSlot;
         }
     }
     /**
@@ -595,11 +584,13 @@ public class Graph
     }
     /**
      * =========== is there a existing edge? ==========
-     * @param slotX
-     * @param indexY
-     * @return
+     * @param slotX of the ajList
+     * @param slotY of the ajList
+     * @param indexX handle
+     * @param indexY handle
+     * @return is it an edge?
      */
-    private boolean isEdge(int slotX, int indexY)
+    private boolean isEdge(int slotX, int slotY, int indexX, int indexY)
     {
         Node checkerX = ajList[slotX];
         while (checkerX != null)
