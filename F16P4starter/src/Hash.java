@@ -84,6 +84,7 @@ public class Hash {
      * @param manager
      *            - associated memory manager
      * @return
+     *            - data in the format of string
      * @throws IOException 
      */
     public String getRecord(Handle handle, Memman manager) throws IOException {
@@ -222,7 +223,8 @@ public class Hash {
      *         when a duplicate is found
      * @throws IOException 
      */
-    private int search(String record, int base, Memman manager) throws IOException {
+    private int search(String record, int base, Memman manager) 
+            throws IOException {
         int pos = base;
         for (int i = 1;; i++) {
             if (hashtable[pos] == null) {

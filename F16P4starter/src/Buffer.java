@@ -54,16 +54,21 @@ public class Buffer {
         return data[pos];
     }
 
+ 
     /**
      * Read a data array
      * 
      * @param pos
-     *            - starting index of the byte array
-     * @return - the byte array read from the buffer
+     *              - starting postion of the byte array
+     * @param length
+     *              - length of the target
+     * @return
+     *              - the byte array read from the bufer
      */
     public byte[] getData(int pos, int length) {
         byte[] temp = new byte[data.length];
-        System.arraycopy(data, pos, temp, 0, (length < data.length - pos) ? length : (data.length - pos));
+        System.arraycopy(data, pos, temp, 0, (length < data.length - pos) 
+                ? length : (data.length - pos));
         return temp;
     }
 
@@ -76,7 +81,8 @@ public class Buffer {
      *            -starting index of the byte array
      */
     public void setData(byte[] b, int pos) {
-        System.arraycopy(b, 0, data, pos, (((pos + b.length) <= data.length) ? b.length : (data.length - pos)));
+        System.arraycopy(b, 0, data, pos, (((pos + b.length) <= data.length) 
+                ? b.length : (data.length - pos)));
         dirty = true;
     }
 

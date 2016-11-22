@@ -25,25 +25,25 @@ public class Handle
     }
 
 
-//    // ----------------------------------------------------------
-//    /**
-//     * Overload compareTo
-//     *
-//     * @param it
-//     *            The handle being compared against
-//     * @return standard values of -1, 0, 1
-//     */
-//    public int compareTo(Handle it) {
-//        if (thePos < it.pos()) {
-//            return -1;
-//        } 
-//        else if (thePos == it.pos()) {
-//            return 0;
-//        } 
-//        else {
-//            return 1;
-//        }
-//    }
+    // ----------------------------------------------------------
+    /**
+     * Overload compareTo
+     *
+     * @param it
+     *            The handle being compared against
+     * @return standard values of -1, 0, 1
+     */
+    public int compareTo(Handle it) {
+        if (thePos < it.pos()) {
+            return -1;
+        } 
+        else if (thePos == it.pos()) {
+            return 0;
+        } 
+        else {
+            return 1;
+        }
+    }
 
 
     // ----------------------------------------------------------
@@ -57,13 +57,13 @@ public class Handle
     }
 
 
-//    // ----------------------------------------------------------
-//    /**
-//     * Overload toString
-//     *
-//     * @return A print string
-//     */
-//    public String toString() {
-//        return String.valueOf(thePos);
-//    }
+    // ----------------------------------------------------------
+    /**
+     * Overload toString
+     *
+     * @return A print string
+     */
+    public String toString() {
+        return String.valueOf(thePos);
+    }
 }

@@ -15,20 +15,29 @@ public class Bufferpool {
     private static int bufsize;
     private int size;
     private Buffer[] pool;
+
+    /**
+     * Number of cache hits
+     */
     public int cachehits = 0;
+
+    /**
+     * Number of disk hits
+     */
     public int diskhits = 0;
 
     /**
-     * The constructor, it opens the data file, defines the maximum number of buffers
-     *                  and the size of the buffer
+     * The constructor, it opens the data file, 
+     * defines the maximum number of buffers and the size of the buffer
+     * 
      * @param filename
-     *                      - file on the disk managed by the memory manager/buffer pool
+     *       - file on the disk managed by the memory manager/buffer pool
      * @param mb
-     *                      - maximum block number defined by the user
+     *       - maximum block number defined by the user
      * @param bufSize
-     *                      - buffer size defined by the user
+     *       - buffer size defined by the user
      * @throws IOException
-     *             
+     * 
      */
     public Bufferpool(String filename, int mb, int bufSize) throws IOException {
         infile = new RandomAccessFile(filename, "rw");
@@ -48,7 +57,7 @@ public class Bufferpool {
     }
 
     /**
-     * This function put the ith buffer to the beginning 
+     * This function put the ith buffer to the beginning
      * 
      * @param i
      *            - buffer to be moved to the top
@@ -63,11 +72,12 @@ public class Bufferpool {
 
     /**
      * This function flushes the buffer and write the content to the disk file
-     *                          if the buffer is dirty
+     * if the buffer is dirty
+     * 
      * @param buf
-     *                      - the buffer to be flushed
+     *            - the buffer to be flushed
      * @throws IOException
-     *             
+     * 
      */
     private void flushBuffer(Buffer buf) throws IOException {
         if (buf.isDirty()) {
@@ -103,12 +113,12 @@ public class Bufferpool {
     }
 
     /**
-     * This function would search for a buffer with a certain segment of the file
+     * This function would search for a buffer with a certain segment of the
+     * file
      * 
      * @param i
      *            - the ith segment of the file
-     * @return    - the index of the buffer when found
-     *              -1 when not found
+     * @return - the index of the buffer when found -1 when not found
      */
     private int findBlock(int i) {
         for (int j = 0; j < size; j++) {
@@ -119,23 +129,13 @@ public class Bufferpool {
         return -1;
     }
 
-//    /**
-//     * ======
-//     * 
-//     * @return ======
-//     * @throws IOException
-//     *             ======
-//     */
-//    public int getArraySize() throws IOException {
-//        return ((int) infile.length()) / 4;
-//    }
 
     /**
      * This function reads a byte from the buffer
      * 
      * @param index
      *            - index of the byte to read
-     * @return    - byte on that index
+     * @return - byte on that index
      * @throws IOException
      *             ======
      */
@@ -154,12 +154,12 @@ public class Bufferpool {
 
     /**
      * This function reads in a byte array from the buffer
+     * 
      * @param index
-     *                      - the starting index
+     *            - the starting index
      * @param length
-     *                      - the buffer length
-     * @return
-     *                      - the byte array read from the buffer
+     *            - the buffer length
+     * @return - the byte array read from the buffer
      * @throws IOException
      */
     private byte[] readHelp(int index, int length) throws IOException {
@@ -176,11 +176,14 @@ public class Bufferpool {
     }
 
     /**
-     * This function reads in a record that may be be stored across several buffers
+     * This function reads in a record that may be be stored across several
+     * buffers
      * 
      * @param index
-     *                      - starting index
-     * @return              - record in raw bytes
+     *            - starting index
+     * @param length
+     *            - length of the record
+     * @return - record in raw bytes
      * @throws IOException
      *             ======
      */
@@ -191,9 +194,8 @@ public class Bufferpool {
         while (bytesread < len) {
 
             System.arraycopy(readHelp(index, length), 0, result, bytesread,
-                    (bufsize - (index % bufsize) > length) ? length : bufsize - (index % bufsize));
-//            index += bytesread;
-//            length -= bytesread;
+                    (bufsize - (index % bufsize) > length) ? length :
+                        bufsize - (index % bufsize));
             bytesread += (bufsize - (index % bufsize));
             length -= (bufsize - (index % bufsize));
             index += (bufsize - (index % bufsize));
@@ -205,9 +207,9 @@ public class Bufferpool {
      * This function writes a byte array into the buffer
      * 
      * @param index
-     *            ======
+     *            - index of the destination location
      * @param b
-     *            ======
+     *            - byte array to be written
      * @throws IOException
      *             ======
      */
@@ -224,7 +226,8 @@ public class Bufferpool {
         pool[0].setData(b, index % bufsize);
         if (bufsize - (index % bufsize) < b.length) {
             byte[] temp = new byte[b.length - (bufsize - (index % bufsize))];
-            System.arraycopy(b, bufsize - (index % bufsize), temp, 0, temp.length);
+            System.arraycopy(b, bufsize - (index % bufsize),
+                    temp, 0, temp.length);
             index += (bufsize - (index % bufsize));
             write(index, temp);
         }

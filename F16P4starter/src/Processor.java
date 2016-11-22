@@ -41,10 +41,9 @@ public class Processor {
      *            - artist name
      * @param song
      *            - song name
-     * @throws IOException 
+     * @throws IOException
      */
-    private void insert(String artist, String song) 
-            throws IOException {
+    private void insert(String artist, String song) throws IOException {
 
         Handle artistH = artisttable.insert(artist, manager);
         Handle songH = songtable.insert(song, manager);
@@ -60,42 +59,36 @@ public class Processor {
      *            - name of the target hash table
      * @param name
      *            - name of the record
-     * @throws IOException 
+     * @throws IOException
      */
-    private void remove(String location, String name) 
-            throws IOException {
-        if (location.equals("artist")) 
-        {   
+    private void remove(String location, String name) throws IOException {
+        if (location.equals("artist")) {
             Handle artistH = artisttable.getHandle(name, manager);
-            if (artistH != null) 
-            {
-                //toRemove = song needs to be removed along this operation
-                List<Handle> toRemove = map.delete(artistH);
+            if (artistH != null) {
+                // toRemove = song needs to be removed along this operation
+                // List<Handle> toRemove = map.delete(artistH);
+                map.delete(artistH);
                 artisttable.remove(name, manager);
-                System.out.printf("|%s| is removed "
-                        + "from the artist database.\n", name);                
+                System.out.printf("|%s| is removed " + 
+                "from the artist database.\n", name);
             }
-            
-            else 
-            {
-                System.out.printf("|%s| does not"
-                        + " exist in the artist database.\n", name);
+
+            else {
+                System.out.printf("|%s| does not" + 
+                        " exist in the artist database.\n", name);
             }
         }
-        else if (songtable.getHandle(name, manager) != null) 
-        {
-            //toRemove = artist needs to be removed along this operation
-            map.delete
-                    (songtable.getHandle(name, manager));
+        else if (songtable.getHandle(name, manager) != null) {
+            // toRemove = artist needs to be removed along this operation
+            map.delete(songtable.getHandle(name, manager));
             songtable.remove(name, manager);
-            System.out.printf("|%s| is removed from "
-                    + "the song database.\n", name);
+            System.out.printf("|%s| is removed from " + 
+                    "the song database.\n", name);
 
         }
-        else 
-        {
-            System.out.printf("|%s| does not "
-                    + "exist in the song database.\n", name);
+        else {
+            System.out.printf("|%s| does not " + 
+                    "exist in the song database.\n", name);
         }
     }
 
@@ -104,7 +97,7 @@ public class Processor {
      * 
      * @param target
      *            - the target of the print command (artists/songs/blocks)
-     * @throws IOException 
+     * @throws IOException
      */
     private void print(String target) throws IOException {
         if (target.equals("artist")) {
@@ -115,8 +108,7 @@ public class Processor {
             songtable.print(manager);
             System.out.printf("total songs: %d\n", songtable.getSize());
         }
-        else if (target.equals("graph"))
-        {
+        else if (target.equals("graph")) {
             map.printGraph();
         }
         else {
@@ -128,7 +120,7 @@ public class Processor {
      * Process the command file
      * 
      * @return - true on success - false on failure
-     * @throws IOException 
+     * @throws IOException
      */
     public boolean process() throws IOException {
         String[] argument = parser.nextCommand();
