@@ -212,26 +212,14 @@ public class Graph
      */
     private void addListNode(int slot, Node node)
     {
-        //empty list
-        if (ajList[slot] == null)
+        Node current = ajList[slot];
+        //search for insertion position
+        while (current.next != null && current != node)
         {
-            ajList[slot] = node;
+            current = current.next;
         }
-        else
-        {
-            Node current = ajList[slot];
-            //search for insertion position
-            while (current.next != null && current != node)
-            {
-                current = current.next;
-            }
-            //Node does not exist
-            if (current != node)
-            {
-                current.next = node;
-                node.previous = current;
-            }
-        }
+        current.next = node;
+        node.previous = current;
     }
     /**
      *===========  base insert function  ============
