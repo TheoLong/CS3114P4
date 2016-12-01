@@ -1,9 +1,13 @@
-import java.util.*;
 import java.math.*;
 /**
  * Class for graph. uses hash function to insert
+ * I later realize there is no need for hash table in this class
+ * However, I spent a lot of time to write it and Dr.Shaffer
+ * agree that he will not deduct points because of this.
+ * Therefore, I decided to keep it as it works fine 
  * @author Theo
  * @version 1.1
+ * 
  */
 public class Graph 
 {
@@ -133,12 +137,11 @@ public class Graph
     /**
      * =============    delete      =================
      * @param h handle to delete
-     * @return other necessary handle to delete
      * 
      * this function will return list of handles that
      * must be delete along this operation.
      */
-    public List<Handle> delete(Handle h)
+    public void delete(Handle h)
     {
         //List<Handle> toRemove = new ArrayList<Handle>();
         int subIndex;
@@ -160,8 +163,7 @@ public class Graph
             checker = checker.next;
         }
         //toRemove.add(new Handle (AJlist[index].index));
-        ajList[targetIndex] = new Node(-1);      
-        return null;
+        ajList[targetIndex] = new Node(-1);
     }
     /**
      * =============       print list      =================
@@ -409,9 +411,9 @@ public class Graph
         int connectedCompNum = 0;
         int maxCompNum = 0;
         //Node maxCompNode;
-        List<Node> maxGraph = null;
-        List<Node> temp;
-        //count howmany connected components
+        Node maxGraph = null;
+        Node temp;
+        //count how many connected components
         for (int i = 0; i < size; i++)
         {
             //if visited == false, this will be a new connected graph
@@ -453,24 +455,36 @@ public class Graph
      * update the number of components in current group
      * and return all nodes from this connected graph
      */
-    private List<Node> bfVisit(Node root)
+    private Node bfVisit(Node root)
     {
         //root itself is a component
         int numOfComp = 1;
         //mark it visited
         ajList[search(root.handleIndex)].visited = true;
         //queue for BFS visiting list, allNode for return
-        List<Node> queue = new ArrayList<Node>();
-        List<Node> allNode = new ArrayList<Node>();
+        Node queueHead;
+        Node queueTail;
+        Node allNode = new Node(root.handleIndex);
+        //List<Node> allNode = new ArrayList<Node>();
         //push in queue
-        queue.add(root);
-        allNode.add(root);
+        queueHead = new Node(root.handleIndex);
+        queueTail = queueHead;
         //when the queue is empty, visit finished
-        while (!queue.isEmpty())
+        while (queueHead != null)
         {
             //marker is the current node, once visited, dequeue
-            int marker = queue.get(0).handleIndex;
-            queue.remove(0);
+            int marker = queueHead.handleIndex;
+            //only one in the queue
+            if (queueHead.next == null)
+            {
+                queueHead = null;
+                queueTail = null;
+            }
+            else
+            {
+                queueHead = queueHead.next;
+                queueHead.previous = null;
+            }
             
             //listCheck will go through all neighbor of marker
             Node listChecker = ajList[search(marker)].next;
@@ -484,14 +498,31 @@ public class Graph
                     numOfComp++;
                     //mark it visited, enqueue for later visit
                     ajList[nodeChecker].visited = true;
-                    queue.add(ajList[nodeChecker]);
-                    allNode.add(ajList[nodeChecker]);
+                    //enqueue
+                    if (queueHead == null)
+                    {
+                        queueHead = new Node(ajList[nodeChecker].handleIndex);
+                        queueTail = queueHead;
+                    }
+                    else
+                    {
+                        queueTail.next = new Node(
+                                ajList[nodeChecker].handleIndex);
+                        queueTail = queueTail.next;
+                    }
+                    allNode.next = new Node(ajList[nodeChecker].handleIndex);
+                    (allNode.next).previous = allNode;
+                    allNode = allNode.next;
                 }
                 //check next 
                 listChecker = listChecker.next;
             } 
         }
         stats[1] = numOfComp;
+        while (allNode.previous != null)
+        {
+            allNode = allNode.previous;
+        }
         return allNode;
     }
     /**
@@ -504,24 +535,26 @@ public class Graph
      * then find the longest path of all these shortest path
      * this will be the diameter.
      */
-    private int dijkstra(List<Node> allNode) 
+    private int dijkstra(Node allNode) 
     {
-        
+        Node holder = allNode;
         int checker;
         int maxShort = 0;
-      //make every element 0
-        for (int i = 0; i < allNode.size(); i++)
+        //make every element 0
+        while (holder != null)
         {
+            Node resetNode = allNode;
             //reset everything for the next run
             //distant = max, visited = false
-            for (int j = 0; j < allNode.size(); j++)
+            while (resetNode != null)
             {
-                checker = search(allNode.get(j).handleIndex);
+                checker = search(resetNode.handleIndex);
                 ajList[checker].distance = Integer.MAX_VALUE;
                 ajList[checker].visited = false;
+                resetNode = resetNode.next;
             }
             //make root distance 0 and visited
-            checker = allNode.get(i).handleIndex; 
+            checker = holder.handleIndex; 
             int marker = search(checker);
             Node root = ajList[marker];
             ajList[marker].distance = 0;
@@ -530,14 +563,23 @@ public class Graph
             
             //start bfs
             //this is a queue for BFS
-            List<Node> queue = new ArrayList<Node>();
-            queue.add(root);
+            Node queueHead = new Node(root.handleIndex);
+            Node queueTail = queueHead;
             //when the queue is empty, visiting finished
-            while (!queue.isEmpty())
+            while (queueHead != null)
             {
                 //marker is the current node in this loop.
-                marker = queue.get(0).handleIndex;
-                queue.remove(0);
+                marker = queueHead.handleIndex;
+                if (queueHead.next == null)
+                {
+                    queueHead = null;
+                    queueTail = null;
+                }
+                else
+                {
+                    queueHead = queueHead.next;
+                    queueHead.previous = null;
+                }
                 //list checker will go through all node from marker
                 Node listChecker = ajList[search(marker)].next;
                 
@@ -567,18 +609,32 @@ public class Graph
                                 ajList[search(marker)].distance + 1;
                         //this is a new node, push in queue and visit
                         //it's neighbor later
-                        queue.add(ajList[nodeChecker]);
+                        if (queueHead == null)
+                        {
+                            queueHead = new Node(
+                                    ajList[nodeChecker].handleIndex);
+                            queueTail = queueHead;
+                        }
+                        else
+                        {
+                            queueTail.next = new Node(
+                                    ajList[nodeChecker].handleIndex);
+                            queueTail = queueTail.next;
+                        }
                     }
                     //check next neighbor of marker
                     listChecker = listChecker.next;
                 }
             }
             //update distance complete, find the max distance
-            for (int k = 0; k < allNode.size(); k++)
+            Node counter = allNode;
+            while (counter != null)
             {
-                checker = search(allNode.get(k).handleIndex);
+                checker = search(counter.handleIndex);
                 maxShort = Math.max(ajList[checker].distance, maxShort);
+                counter = counter.next;
             }
+            holder = holder.next;
         }
         return maxShort;
     }
